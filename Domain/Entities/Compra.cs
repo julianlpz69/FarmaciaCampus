@@ -10,7 +10,6 @@ namespace Domain.Entities
         public DateTime FechaCompra { get; set; }
         public int IdProveedorFK {get; set; }
         public Proveedor Proveedor {get; set; }
-        public ICollection<Medicamento> Medicamentos { get; set; }
         public ICollection<MedicamentoCompra> MedicamentosCompras { get; set; }
     }
 }

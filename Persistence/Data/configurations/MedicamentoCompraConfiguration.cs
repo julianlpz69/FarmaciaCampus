@@ -16,5 +16,12 @@ public class MedicamentoCompraConfiguration : IEntityTypeConfiguration<Medicamen
         builder.Property(p => p.PrecioCompra)
        .IsRequired().HasColumnType("decimal(10,6)");
 
+       builder.HasOne(p => p.Compra)
+       .WithMany(p => p.MedicamentosCompras)
+       .HasForeignKey(p => p.IdCompraFK);
+
+       builder.HasOne(p => p.Medicamento)
+       .WithMany(p => p.MedicamentosCompras)
+       .HasForeignKey(p => p.IdMedicamentoFK);
     }
 }

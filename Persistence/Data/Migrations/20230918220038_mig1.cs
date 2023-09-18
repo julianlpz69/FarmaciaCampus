@@ -149,15 +149,16 @@ namespace Persistence.Data.Migrations
                 name: "medicamento_compra",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IdCompraFK = table.Column<int>(type: "int", nullable: false),
                     IdMedicamentoFK = table.Column<int>(type: "int", nullable: false),
                     CantidadComprada = table.Column<int>(type: "int", nullable: false),
-                    PrecioCompra = table.Column<decimal>(type: "decimal(10,6)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    PrecioCompra = table.Column<decimal>(type: "decimal(10,6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_medicamento_compra", x => new { x.IdMedicamentoFK, x.IdCompraFK });
+                    table.PrimaryKey("PK_medicamento_compra", x => x.Id);
                     table.ForeignKey(
                         name: "FK_medicamento_compra_compra_IdCompraFK",
                         column: x => x.IdCompraFK,
@@ -177,15 +178,16 @@ namespace Persistence.Data.Migrations
                 name: "medicamento_venta",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IdVentaFK = table.Column<int>(type: "int", nullable: false),
                     IdMedicamentoFK = table.Column<int>(type: "int", nullable: false),
                     CantidadVendida = table.Column<int>(type: "int", nullable: false),
-                    Precio = table.Column<decimal>(type: "decimal(10,6)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Precio = table.Column<decimal>(type: "decimal(10,6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_medicamento_venta", x => new { x.IdVentaFK, x.IdMedicamentoFK });
+                    table.PrimaryKey("PK_medicamento_venta", x => x.Id);
                     table.ForeignKey(
                         name: "FK_medicamento_venta_medicamento_IdMedicamentoFK",
                         column: x => x.IdMedicamentoFK,
@@ -217,9 +219,19 @@ namespace Persistence.Data.Migrations
                 column: "IdCompraFK");
 
             migrationBuilder.CreateIndex(
+                name: "IX_medicamento_compra_IdMedicamentoFK",
+                table: "medicamento_compra",
+                column: "IdMedicamentoFK");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_medicamento_venta_IdMedicamentoFK",
                 table: "medicamento_venta",
                 column: "IdMedicamentoFK");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_medicamento_venta_IdVentaFK",
+                table: "medicamento_venta",
+                column: "IdVentaFK");
 
             migrationBuilder.CreateIndex(
                 name: "IX_venta_IdEmpleadoFK",

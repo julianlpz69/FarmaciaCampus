@@ -13,7 +13,6 @@ namespace Domain.Entities
         public int IdEmpleadoFK { get; set; }
         public Empleado Empleado { get; set; }
         public ICollection<MedicamentoVenta> MedicamentoVentas { get; set; }
-        public ICollection<Medicamento> Medicamentos { get; set; }
 
     }
 }

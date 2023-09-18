@@ -11,7 +11,7 @@ using Persistence.Data;
 namespace Persistence.Data.Migrations
 {
     [DbContext(typeof(FarmaciaDBContext))]
-    [Migration("20230918213822_mig1")]
+    [Migration("20230918220038_mig1")]
     partial class mig1
     {
         /// <inheritdoc />
@@ -97,48 +97,54 @@ namespace Persistence.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.MedicamentoCompra", b =>
                 {
-                    b.Property<int>("IdMedicamentoFK")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdCompraFK")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<int>("CantidadComprada")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("IdCompraFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdMedicamentoFK")
                         .HasColumnType("int");
 
                     b.Property<decimal>("PrecioCompra")
                         .HasColumnType("decimal(10,6)");
 
-                    b.HasKey("IdMedicamentoFK", "IdCompraFK");
+                    b.HasKey("Id");
 
                     b.HasIndex("IdCompraFK");
+
+                    b.HasIndex("IdMedicamentoFK");
 
                     b.ToTable("medicamento_compra", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.MedicamentoVenta", b =>
                 {
-                    b.Property<int>("IdVentaFK")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdMedicamentoFK")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<int>("CantidadVendida")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("IdMedicamentoFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdVentaFK")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(10,6)");
 
-                    b.HasKey("IdVentaFK", "IdMedicamentoFK");
+                    b.HasKey("Id");
 
                     b.HasIndex("IdMedicamentoFK");
+
+                    b.HasIndex("IdVentaFK");
 
                     b.ToTable("medicamento_venta", (string)null);
                 });
