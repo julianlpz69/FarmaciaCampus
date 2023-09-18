@@ -1,43 +1,49 @@
 using System.Linq.Expressions;
 using Domain.Entities;
 using Domain.Interface;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Data;
 
 namespace Application.Repository;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
-    public void Add(T entity)
+    private readonly FarmaciaDBContext _context;
+    public GenericRepository(FarmaciaDBContext context){
+        _context = context;
+    }
+    public virtual void Add(T entity)
     {
-        throw new NotImplementedException();
+        _context.Set<T>().Add(entity);
     }
 
-    public void AddRange(IEnumerable<T> entities)
+    public virtual void AddRange(IEnumerable<T> entities)
     {
-        throw new NotImplementedException();
+        _context.Set<T>().AddRange(entities);
     }
 
-    public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
+    public virtual IEnumerable<T> Find(Expression<Func<T, bool>> expression)
     {
-        throw new NotImplementedException();
+        return _context.Set<T>().Where(expression);
     }
 
-    public Task<IEnumerable<T>> GetAllAsync()
+    public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Set<T>().ToListAsync();
     }
 
-    public Task<T> GetById(int id)
+    public virtual async Task<T> GetById(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Set<T>().FindAsync(id);
     }
 
     public void Remove(T entity)
     {
-        throw new NotImplementedException();
+        _context.Set<T>().Remove(entity);   
     }
 
     public void RemoveRange(IEnumerable<T> entities)
     {
-        throw new NotImplementedException();
+        _context.Set<T>().AddRange(entities);
     }
 }
