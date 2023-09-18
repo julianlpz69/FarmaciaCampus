@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Persistence.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class PrimeraMigracion : Migration
+    public partial class mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -146,44 +146,18 @@ namespace Persistence.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CompraMedicamento",
-                columns: table => new
-                {
-                    ComprasId = table.Column<int>(type: "int", nullable: false),
-                    MedicamentosId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompraMedicamento", x => new { x.ComprasId, x.MedicamentosId });
-                    table.ForeignKey(
-                        name: "FK_CompraMedicamento_compra_ComprasId",
-                        column: x => x.ComprasId,
-                        principalTable: "compra",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CompraMedicamento_medicamento_MedicamentosId",
-                        column: x => x.MedicamentosId,
-                        principalTable: "medicamento",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "medicamento_compra",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IdCompraFK = table.Column<int>(type: "int", nullable: false),
                     IdMedicamentoFK = table.Column<int>(type: "int", nullable: false),
                     CantidadComprada = table.Column<int>(type: "int", nullable: false),
-                    PrecioCompra = table.Column<decimal>(type: "decimal(10,6)", nullable: false)
+                    PrecioCompra = table.Column<decimal>(type: "decimal(10,6)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_medicamento_compra", x => x.Id);
+                    table.PrimaryKey("PK_medicamento_compra", x => new { x.IdMedicamentoFK, x.IdCompraFK });
                     table.ForeignKey(
                         name: "FK_medicamento_compra_compra_IdCompraFK",
                         column: x => x.IdCompraFK,
@@ -203,16 +177,15 @@ namespace Persistence.Data.Migrations
                 name: "medicamento_venta",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IdVentaFK = table.Column<int>(type: "int", nullable: false),
                     IdMedicamentoFK = table.Column<int>(type: "int", nullable: false),
                     CantidadVendida = table.Column<int>(type: "int", nullable: false),
-                    Precio = table.Column<decimal>(type: "decimal(10,6)", nullable: false)
+                    Precio = table.Column<decimal>(type: "decimal(10,6)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_medicamento_venta", x => x.Id);
+                    table.PrimaryKey("PK_medicamento_venta", x => new { x.IdVentaFK, x.IdMedicamentoFK });
                     table.ForeignKey(
                         name: "FK_medicamento_venta_medicamento_IdMedicamentoFK",
                         column: x => x.IdMedicamentoFK,
@@ -228,40 +201,10 @@ namespace Persistence.Data.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "MedicamentoVenta",
-                columns: table => new
-                {
-                    MedicamentosId = table.Column<int>(type: "int", nullable: false),
-                    VentasId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MedicamentoVenta", x => new { x.MedicamentosId, x.VentasId });
-                    table.ForeignKey(
-                        name: "FK_MedicamentoVenta_medicamento_MedicamentosId",
-                        column: x => x.MedicamentosId,
-                        principalTable: "medicamento",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MedicamentoVenta_venta_VentasId",
-                        column: x => x.VentasId,
-                        principalTable: "venta",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.CreateIndex(
                 name: "IX_compra_IdProveedorFK",
                 table: "compra",
                 column: "IdProveedorFK");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CompraMedicamento_MedicamentosId",
-                table: "CompraMedicamento",
-                column: "MedicamentosId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_medicamento_IdProveedorFK",
@@ -274,24 +217,9 @@ namespace Persistence.Data.Migrations
                 column: "IdCompraFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_medicamento_compra_IdMedicamentoFK",
-                table: "medicamento_compra",
-                column: "IdMedicamentoFK");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_medicamento_venta_IdMedicamentoFK",
                 table: "medicamento_venta",
                 column: "IdMedicamentoFK");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_medicamento_venta_IdVentaFK",
-                table: "medicamento_venta",
-                column: "IdVentaFK");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MedicamentoVenta_VentasId",
-                table: "MedicamentoVenta",
-                column: "VentasId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_venta_IdEmpleadoFK",
@@ -308,16 +236,10 @@ namespace Persistence.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CompraMedicamento");
-
-            migrationBuilder.DropTable(
                 name: "medicamento_compra");
 
             migrationBuilder.DropTable(
                 name: "medicamento_venta");
-
-            migrationBuilder.DropTable(
-                name: "MedicamentoVenta");
 
             migrationBuilder.DropTable(
                 name: "compra");

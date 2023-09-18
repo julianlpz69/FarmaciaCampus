@@ -16,5 +16,21 @@ public class CompraConfiguration : IEntityTypeConfiguration<Compra>
         builder.HasOne(p => p.Proveedor)
         .WithMany(p => p.Compras)
         .HasForeignKey(p => p.IdProveedorFK);
+
+        builder.HasMany(e => e.Medicamentos)
+        .WithMany(e => e.Compras)
+        .UsingEntity<MedicamentoCompra>(
+            e => e.HasOne(p => p.Medicamento)
+            .WithMany(p => p.MedicamentosCompras)
+            .HasForeignKey(p => p.IdMedicamentoFK),
+            
+            e => e.HasOne(p => p.Compra)
+            .WithMany(p => p.MedicamentosCompras)
+            .HasForeignKey(e => e.IdCompraFK),
+            p => {
+                p.ToTable("medicamento_compra");
+                p.HasKey( e => new {e.IdMedicamentoFK, e.IdCompraFK});
+            }
+        );
     }
 }

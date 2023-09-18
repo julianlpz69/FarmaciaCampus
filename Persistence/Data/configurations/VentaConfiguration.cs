@@ -22,6 +22,20 @@ public class VentaConfiguration : IEntityTypeConfiguration<Venta>
         builder.HasOne(p => p.Empleado)
         .WithMany(p => p.Ventas)
         .HasForeignKey(p => p.IdEmpleadoFK);
+        
+        builder.HasMany(e => e.Medicamentos)
+        .WithMany(e => e.Ventas)
+        .UsingEntity<MedicamentoVenta>(
+            e => e.HasOne(p => p.Medicamento)
+            .WithMany(e => e.MedicamentoVentas)
+            .HasForeignKey(e => e.IdMedicamentoFK),
 
+            e => e.HasOne(f => f.Venta)
+            .WithMany(f => f.MedicamentoVentas)
+            .HasForeignKey(e => e.IdVentaFK),
+            e => {
+                e.HasKey( f => new {f.IdVentaFK, f.IdMedicamentoFK});
+            }
+        );
     }
 } 

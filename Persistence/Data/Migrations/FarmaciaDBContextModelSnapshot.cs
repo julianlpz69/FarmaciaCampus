@@ -19,21 +19,6 @@ namespace Persistence.Data.Migrations
                 .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("CompraMedicamento", b =>
-                {
-                    b.Property<int>("ComprasId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MedicamentosId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ComprasId", "MedicamentosId");
-
-                    b.HasIndex("MedicamentosId");
-
-                    b.ToTable("CompraMedicamento");
-                });
-
             modelBuilder.Entity("Domain.Entities.Compra", b =>
                 {
                     b.Property<int>("Id")
@@ -109,54 +94,48 @@ namespace Persistence.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.MedicamentoCompra", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("CantidadComprada")
+                    b.Property<int>("IdMedicamentoFK")
                         .HasColumnType("int");
 
                     b.Property<int>("IdCompraFK")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdMedicamentoFK")
+                    b.Property<int>("CantidadComprada")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<decimal>("PrecioCompra")
                         .HasColumnType("decimal(10,6)");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdMedicamentoFK", "IdCompraFK");
 
                     b.HasIndex("IdCompraFK");
-
-                    b.HasIndex("IdMedicamentoFK");
 
                     b.ToTable("medicamento_compra", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.MedicamentoVenta", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("CantidadVendida")
+                    b.Property<int>("IdVentaFK")
                         .HasColumnType("int");
 
                     b.Property<int>("IdMedicamentoFK")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdVentaFK")
+                    b.Property<int>("CantidadVendida")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(10,6)");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdVentaFK", "IdMedicamentoFK");
 
                     b.HasIndex("IdMedicamentoFK");
-
-                    b.HasIndex("IdVentaFK");
 
                     b.ToTable("medicamento_venta", (string)null);
                 });
@@ -237,36 +216,6 @@ namespace Persistence.Data.Migrations
                     b.ToTable("venta", (string)null);
                 });
 
-            modelBuilder.Entity("MedicamentoVenta", b =>
-                {
-                    b.Property<int>("MedicamentosId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VentasId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MedicamentosId", "VentasId");
-
-                    b.HasIndex("VentasId");
-
-                    b.ToTable("MedicamentoVenta");
-                });
-
-            modelBuilder.Entity("CompraMedicamento", b =>
-                {
-                    b.HasOne("Domain.Entities.Compra", null)
-                        .WithMany()
-                        .HasForeignKey("ComprasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Medicamento", null)
-                        .WithMany()
-                        .HasForeignKey("MedicamentosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Entities.Compra", b =>
                 {
                     b.HasOne("Domain.Entities.Proveedor", "Proveedor")
@@ -344,21 +293,6 @@ namespace Persistence.Data.Migrations
                     b.Navigation("Empleado");
 
                     b.Navigation("Paciente");
-                });
-
-            modelBuilder.Entity("MedicamentoVenta", b =>
-                {
-                    b.HasOne("Domain.Entities.Medicamento", null)
-                        .WithMany()
-                        .HasForeignKey("MedicamentosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Venta", null)
-                        .WithMany()
-                        .HasForeignKey("VentasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Compra", b =>
