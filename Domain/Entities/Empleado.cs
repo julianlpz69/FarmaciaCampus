@@ -9,7 +9,7 @@ namespace Domain.Entities
     {
         public string NombreEmpleado {get; set;}
         public string CargoEmpleado {get; set;}
-        public DateTime FechaContratacopn {get; set;}
+        public DateTime FechaContratacion {get; set;}
         public ICollection<Venta> Ventas {get; set;}
     }
 }
