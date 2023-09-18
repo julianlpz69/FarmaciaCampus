@@ -24,4 +24,4 @@ public class VentaConfiguration : IEntityTypeConfiguration<Venta>
         .HasForeignKey(p => p.IdEmpleadoFK);
 
     }
-}
+} 
