@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Application.UnitOfWork;
+using Domain.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions
 {
@@ -15,6 +14,9 @@ namespace API.Extensions
                         .AllowAnyMethod()
                         .AllowAnyHeader());
         });
-
+        public static void AppConfigure(this IServiceCollection services){
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
+        }
     }
+  
 }

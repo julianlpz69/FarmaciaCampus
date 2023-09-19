@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureCors();
-
+builder.Services.AppConfigure();
 
 builder.Services.AddDbContext<FarmaciaDBContext>(options =>{
     string connectionString = builder.Configuration.GetConnectionString("ConexMysql");

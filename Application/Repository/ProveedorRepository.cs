@@ -1,16 +1,14 @@
-
 using Domain.Entities;
 using Domain.Interface;
 using Persistence.Data;
 
 namespace Application.Repository;
 
-public class PacienteRepository : GenericRepository<Paciente>, IPaciente
+public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
 {
     private readonly FarmaciaDBContext _context;
-    public PacienteRepository(FarmaciaDBContext context) : base(context)
+    public ProveedorRepository(FarmaciaDBContext context) : base(context)
     {
         _context = context;
     }
-
 }
