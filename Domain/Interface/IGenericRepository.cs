@@ -11,5 +11,5 @@ public interface IGenericRepository<T> where T : BaseEntity
     void RemoveRange(IEnumerable<T> entities);
     Task<IEnumerable<T>> GetAllAsync();
     IEnumerable<T> Find(Expression<Func<T,bool>> expression);
-    Task<T> GetById(int id);  
+    Task<T> GetByIdAsync(int id);  
 }

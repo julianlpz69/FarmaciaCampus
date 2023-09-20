@@ -15,6 +15,14 @@ namespace Persistence.Data
     
         }
 
+        public DbSet<Cargo> Cargos { get; set; }
+        public DbSet<MetodoCompra> MetodosCompras { get; set; }
+        public DbSet<Ciudad> Ciudades { get; set; }
+        public DbSet<TipoPersona> TiposPersonas { get; set; }
+        public DbSet<Pais> Paises { get; set; }
+        public DbSet<Direccion> Direcciones { get; set; }
+        public DbSet<Departamento> Departamentos { get; set; }
+        public DbSet<FacturaBase> FacturaBases { get; set; }
         public DbSet<FacturaCompra> FacturaCompras { get; set; }
         public DbSet<Persona> Personas { get; set; }
         public DbSet<Medicamento> Medicamentos { get; set; }
