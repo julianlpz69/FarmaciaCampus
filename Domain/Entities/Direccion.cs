@@ -14,5 +14,7 @@ public class Direccion : BaseEntity
     public string Carrera {get; set;}
     public string Numero {get; set;}
     public string Complemento {get; set;}
-    public ICollection<Persona> Personas {get; set;}
+    public ICollection<Cliente> Clientes {get; set;}
+    public ICollection<Empleado> Empleados {get; set;}
+    public ICollection<Proveedor> Proveedores {get; set;}
 }

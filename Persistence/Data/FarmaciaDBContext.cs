@@ -16,20 +16,21 @@ namespace Persistence.Data
         }
 
         public DbSet<FacturaCompra> FacturaCompras { get; set; }
-        public DbSet<Persona> Personas { get; set; }
         public DbSet<Medicamento> Medicamentos { get; set; }
         public DbSet<MedicamentoCompra> MedicamentosCompras { get; set; }
         public DbSet<MedicamentoVenta> MedicamentosVentas { get; set; }
         public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<FacturaVenta> FacturaVentas { get; set; }
-        public DbSet<MetodoCompra> MetodoCompras {get; set;}
+        public DbSet<MetodoPago> MetodoCoPagos {get; set;}
         public DbSet<Pais> Paises {get; set;}
         public DbSet<Departamento> Departamentos {get; set; }
         public DbSet<Ciudad> Ciudades {get; set;}
         public DbSet<Direccion> Direcciones {get; set;}
-        public DbSet<TipoPersona> TipoPersonas {get; set;}
-        public DbSet<Cargo> Cargos {get; set;}
-        public DbSet<FacturaBase> FacturaBases {get; set;}    
+        public DbSet<Marca> Marcas {get; set;}
+        public DbSet<CargoEmpleado> CargosEmpleados {get; set;}
+        public DbSet<FacturaBase> FacturaBases {get; set;}
+        public DbSet<Empleado> Empleados {get; set;}        
+        public DbSet<Cliente> Clientes {get; set;}    
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

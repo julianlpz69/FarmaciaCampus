@@ -22,5 +22,9 @@ public class FacturaBaseConfiguration : IEntityTypeConfiguration<FacturaBase>
         builder.Property(e => e.Total)
         .IsRequired();
 
+        builder.HasOne(p => p.MetodoPago)
+            .WithMany(p => p.FacturasBase)
+            .HasForeignKey(p => p.IdMetodoPagoFK);
+
     }
 }

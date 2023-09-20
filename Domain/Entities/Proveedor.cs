@@ -9,7 +9,8 @@ namespace Domain.Entities
     {
         public string NombreProveedor { get; set; }
         public string ContactoProveedor { get; set; }
-        public string DireccionProveedor {get; set; }
+        public int IdDireccionFK { get; set; }
+        public Direccion Direccion { get; set; }
         public ICollection<FacturaCompra> FacturaCompras { get; set; }
         public ICollection<Medicamento> Medicamentos { get; set; }
     }

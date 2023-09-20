@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Data.configurations;
 
-public class MetodoCompraConfiguration : IEntityTypeConfiguration<MetodoCompra>
+public class MetodoPagoConfiguration : IEntityTypeConfiguration<MetodoPago>
 {
-    public void Configure(EntityTypeBuilder<MetodoCompra> builder)
+    public void Configure(EntityTypeBuilder<MetodoPago> builder)
     {
         builder.ToTable("metodo_pago");
 

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities;
 
-public class MetodoCompra : BaseEntity
+public class MetodoPago : BaseEntity
 {
     public string Descripcion {get; set;}
-    public ICollection<FacturaVenta> Facturas{get; set;}
+    public ICollection<FacturaBase> FacturasBase{get; set;}
 }

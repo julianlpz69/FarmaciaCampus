@@ -13,9 +13,13 @@ public class VentaConfiguration : IEntityTypeConfiguration<FacturaVenta>
         builder.Property(e => e.IdFacturaBaseFk)
         .IsRequired();
 
-        builder.HasOne(p => p.Paciente)
-        .WithMany(p => p.FacturaVentas)
-        .HasForeignKey(p => p.IdFacturaBaseFk);
+        builder.HasOne(p => p.Empleado)
+            .WithMany(p => p.FacturaVentas)
+            .HasForeignKey(p => p.IdEmpleadoFK);
+
+        builder.HasOne(p => p.Cliente)
+            .WithMany(p => p.FacturaVentas)
+            .HasForeignKey(p => p.IdClienteFK);
         
         builder.HasOne(e => e.FacturaBase)
         .WithMany(e => e.FacturaVentas)
