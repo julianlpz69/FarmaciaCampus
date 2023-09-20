@@ -11,6 +11,8 @@ public interface IUnitOfWork
     IFacturaCompra FacturaCompras {get;}
     IEmpleado Empleados {get;}
     IDireccion Direcciones {get;}
+	IRol Roles { get; }
+    IUser Users { get; }
     IFacturaBase FacturaBases {get;}
     Task<int> SaveAsync(); 
 }

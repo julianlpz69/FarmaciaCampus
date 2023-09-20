@@ -19,6 +19,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private ProveedorRepository _proveedor;
     private MedicamentoVentaRepository _medicamentoVenta;
     private readonly FarmaciaDBContext _context; 
+	private IRol _roles;
+    private IUser _users;
     public UnitOfWork(FarmaciaDBContext context){
         _context = context;
     }
@@ -119,6 +121,31 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _facturaBase;
         }
     }
+
+ public IRol Roles
+    {
+        get
+        {
+            if (_roles == null)
+            {
+                _roles = new RolRepository(_context);
+            }
+            return _roles;
+        }
+    }
+
+    public IUser Users
+    {
+        get
+        {
+            if (_users == null)
+            {
+                _users = new UserRepository(_context);
+            }
+            return _users;
+        }
+    }
+
 
     public void Dispose()
     {
