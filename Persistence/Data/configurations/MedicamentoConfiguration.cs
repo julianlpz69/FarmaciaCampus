@@ -28,5 +28,10 @@ public class MedicamentoConfiguration : IEntityTypeConfiguration<Medicamento>
         .HasForeignKey(p => p.IdProveedorFK);
 
 
+        builder.HasOne(p => p.Marca)
+            .WithMany(p => p.Medicamentos)
+            .HasForeignKey(p => p.IdMarcaFK);
+
+
     }
 }

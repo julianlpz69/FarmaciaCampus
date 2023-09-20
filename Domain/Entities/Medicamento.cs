@@ -13,6 +13,8 @@ namespace Domain.Entities
         public DateTime FechaExpiracion {get; set;}
         public int IdProveedorFK {get; set;}
         public Proveedor Proveedor {get; set;}
+        public int IdMarcaFK {get; set;}
+        public Marca Marca {get; set;}
         public ICollection<MedicamentoCompra> MedicamentosCompras { get; set; }
         public ICollection<MedicamentoVenta> MedicamentoVentas {get; set;}
 
