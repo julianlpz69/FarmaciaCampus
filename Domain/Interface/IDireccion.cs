@@ -1,7 +1,10 @@
+
+
 using Domain.Entities;
+
 namespace Domain.Interface;
 
-public interface ICompras : IGenericRepository<FacturaCompra>
+public interface IDireccion : IGenericRepository<Direccion>
 {
         
 }

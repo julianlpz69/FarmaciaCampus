@@ -6,7 +6,7 @@ using Domain.Entities;
 
 namespace Domain.Interface;
 
-    public interface IVenta : IGenericRepository<FacturaVenta>
-    {
+public interface IFacturaCompra : IGenericRepository<FacturaCompra>
+{
         
-    }
+}
