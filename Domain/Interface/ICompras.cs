@@ -1,7 +1,7 @@
 using Domain.Entities;
 namespace Domain.Interface;
 
-public interface ICompras : IGenericRepository<Compra>
+public interface ICompras : IGenericRepository<FacturaCompra>
 {
         
 }

@@ -6,7 +6,7 @@ using Domain.Entities;
 
 namespace Domain.Interface;
 
-    public interface IPaciente : IGenericRepository<Paciente>
+    public interface IPaciente : IGenericRepository<Persona>
     {
         
     }

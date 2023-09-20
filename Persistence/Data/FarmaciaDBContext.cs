@@ -15,14 +15,13 @@ namespace Persistence.Data
     
         }
 
-        public DbSet<Compra> Compras { get; set; }
-        public DbSet<Empleado> Empleados { get; set; }
+        public DbSet<FacturaCompra> FacturaCompras { get; set; }
+        public DbSet<Persona> Personas { get; set; }
         public DbSet<Medicamento> Medicamentos { get; set; }
         public DbSet<MedicamentoCompra> MedicamentosCompras { get; set; }
         public DbSet<MedicamentoVenta> MedicamentosVentas { get; set; }
-        public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Proveedor> Proveedores { get; set; }
-        public DbSet<Venta> Ventas { get; set; }
+        public DbSet<FacturaVenta> FacturaVentas { get; set; }
     
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

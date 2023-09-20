@@ -17,7 +17,7 @@ public class MedicamentoCompraConfiguration : IEntityTypeConfiguration<Medicamen
        .IsRequired().HasColumnType("decimal(10,6)");
 
        builder.HasOne(p => p.Compra)
-       .WithMany(p => p.MedicamentosCompras)
+       .WithMany(p => p.MedicamentoCompras)
        .HasForeignKey(p => p.IdCompraFK);
 
        builder.HasOne(p => p.Medicamento)
