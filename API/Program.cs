@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 using API.Extensions;
+using AspNetCoreRateLimit;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureCors();
 builder.Services.AddAplicacionServices();
+builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
+builder.Services.ConfigureApiVersioning();
+builder.Services.ConfigureRatelimiting();
 builder.Services.AddJwt(builder.Configuration);
 
 builder.Services.AddDbContext<FarmaciaDBContext>(options =>{
@@ -35,6 +40,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseIpRateLimiting();
 
 app.MapControllers();
 
