@@ -12,7 +12,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private FacturaCompraRepository _facturaCompra;
     private FacturaVentaRepository _facturaVenta;
     private MedicamentoCompraRepository _medicamentoCompra;
-    private PacienteRepository _paciente;
+    private ClienteRepository _cliente;
     private DireccionRepository _direccion;
     private EmpleadoRepository _empleado;
     private MedicamentoRepository _medicamento;
@@ -62,13 +62,13 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-    public IPaciente Pacientes
+    public ICliente Clientes
     {
         get{
-            if(_paciente == null){
-                _paciente = new (_context);
+            if(_cliente == null){
+                _cliente = new (_context);
             }
-            return _paciente;
+            return _cliente;
         }
     }
 
