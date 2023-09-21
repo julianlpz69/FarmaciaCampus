@@ -14,15 +14,17 @@ public class MedicamentoVentaRepository : GenericRepository<MedicamentoVenta>, I
         _context = context;
     }
 
-    public double CalcularTotalVentasParacetamol()
+    public int CalcularTotalVentasParacetamol()
     {
         string nombreMedicamento = "Paracetamol";
 
         var totalVentas = _context.MedicamentosVentas
             .Where(mv => mv.Medicamento.NombreMedicamento.ToLower() == nombreMedicamento.ToLower())
-            .Sum(mv => mv.Precio * mv.CantidadVendida);
+            .ToList();
 
-        return totalVentas;
+        var veces = totalVentas.Count();   
+
+        return veces;
     }
 
     public double CalcularTotalDineroRecaudadoPorVentas()
