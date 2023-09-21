@@ -12,6 +12,7 @@ namespace API.Profiles
     {
         public MappingProfiles(){
             CreateMap<Cliente,ClienteDto>().ReverseMap();
+            CreateMap<Medicamento,MedicamentoDto>().ReverseMap();
             
 
         }

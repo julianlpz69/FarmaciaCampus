@@ -8,5 +8,6 @@ namespace Domain.Entities;
 public class MetodoPago : BaseEntity
 {
     public string Descripcion {get; set;}
-    public ICollection<FacturaBase> FacturasBase{get; set;}
+    public ICollection<FacturaCompra> FacturasCompras{get; set;}
+    public ICollection<FacturaVenta> FacturasVentas{get; set;}
 }

@@ -13,6 +13,5 @@ namespace Domain.Entities
         public Medicamento Medicamento { get; set; }
         public int CantidadVendida { get; set; }
         public double Precio {get; set;}
-        public int IdFacturaFk {get;set;}
     }
 }

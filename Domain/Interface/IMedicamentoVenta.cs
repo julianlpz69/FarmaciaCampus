@@ -8,5 +8,6 @@ namespace Domain.Interface;
 
 public interface IMedicamentoVenta : IGenericRepository<MedicamentoVenta> 
 {
-      
+   
+    
 }
