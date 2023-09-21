@@ -1,0 +1,121 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using API.Dtos;
+using AutoMapper;
+using Domain.Entities;
+using Domain.Interface;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Controllers
+{
+    public class MedicamentoController : BaseApiController
+    {
+    private IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
+
+
+        public MedicamentoController(IUnitOfWork UnitOfWork, IMapper Mapper)
+        {
+            _unitOfWork = UnitOfWork;
+            mapper = Mapper;
+        }
+
+         [HttpGet]
+         [ProducesResponseType(StatusCodes.Status200OK)]
+         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        
+         public async Task<ActionResult<IEnumerable<MedicamentoDto>>> Get()
+         {
+            var Medicamentos = await _unitOfWork.Medicamentos.GetAllAsync();
+            return mapper.Map<List<MedicamentoDto>>(Medicamentos);
+
+         }
+
+
+         [HttpGet("GetStock50")]
+         [ProducesResponseType(StatusCodes.Status200OK)]
+         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        
+         public async Task<ActionResult<IEnumerable<MedicamentoDto>>> GetStock50()
+         {
+            var Medicamentos = await _unitOfWork.Medicamentos.GetStock_50();
+            return mapper.Map<List<MedicamentoDto>>(Medicamentos);
+
+         }
+
+
+
+         [HttpGet("GetExpi2024")]
+         [ProducesResponseType(StatusCodes.Status200OK)]
+         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        
+         public async Task<ActionResult<IEnumerable<MedicamentoDto>>> GetExpi2023()
+         {
+            var Medicamentos = await _unitOfWork.Medicamentos.GetExpiracion2024();
+            return mapper.Map<List<MedicamentoDto>>(Medicamentos);
+
+         }
+
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<MedicamentoDto>> Get(int id)
+        {
+            var medicamento = await _unitOfWork.Medicamentos.GetById(id);
+            return mapper.Map<MedicamentoDto>(medicamento);
+        }
+
+
+          [HttpPost]
+          [ProducesResponseType(StatusCodes.Status201Created)]
+          [ProducesResponseType(StatusCodes.Status400BadRequest)]
+          public async Task<ActionResult<Medicamento>> Post(MedicamentoDto MedicamentoDto)
+          {
+            var medicamento = this.mapper.Map<Medicamento>(MedicamentoDto);
+             _unitOfWork.Medicamentos.Add(medicamento);
+            await _unitOfWork.SaveAsync();
+         
+            if (medicamento == null){
+                return BadRequest();
+            }
+            MedicamentoDto.Id = medicamento.Id;
+            return CreatedAtAction(nameof(Post), new {id = MedicamentoDto.Id}, medicamento); 
+          }
+
+
+
+            [HttpPut("{id}")]
+            [ProducesResponseType(StatusCodes.Status200OK)]
+            [ProducesResponseType(StatusCodes.Status404NotFound)]
+            [ProducesResponseType(StatusCodes.Status400BadRequest)]
+            
+            public async Task<ActionResult<MedicamentoDto>> Put(int id, [FromBody]MedicamentoDto MedicamentoDto){
+                if(MedicamentoDto == null)
+                    return NotFound();
+            
+                var medicamento = this.mapper.Map<Medicamento>(MedicamentoDto);
+                _unitOfWork.Medicamentos.Update(medicamento);
+                await _unitOfWork.SaveAsync();
+                return MedicamentoDto;
+            }
+
+
+
+            [HttpDelete("{id}")]
+            [ProducesResponseType(StatusCodes.Status204NoContent)]
+            [ProducesResponseType(StatusCodes.Status404NotFound)]
+            
+            public async Task<IActionResult> Delete (int id){
+            var medicamento = await _unitOfWork.Medicamentos.GetById(id);
+            if(medicamento == null)
+            return NotFound();
+            
+            _unitOfWork.Medicamentos.Remove(medicamento);
+            await _unitOfWork.SaveAsync();
+            return NoContent();    }
+
+    }
+}

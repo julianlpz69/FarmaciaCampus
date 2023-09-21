@@ -9,6 +9,7 @@ namespace API.Dtos
     {
         public int Id { get; set;}
         public string NombreMedicamento { get; set; }
+        public bool RequiereReceta { get; set; }
         public Double PrecioMedicamento {get; set; }
         public int Stock {get; set;}
         public DateTime FechaExpiracion {get; set;}

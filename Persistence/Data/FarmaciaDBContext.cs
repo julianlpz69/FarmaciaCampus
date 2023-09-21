@@ -28,7 +28,7 @@ namespace Persistence.Data
         public DbSet<Direccion> Direcciones {get; set;}
         public DbSet<Marca> Marcas {get; set;}
         public DbSet<CargoEmpleado> CargosEmpleados {get; set;}
-        public DbSet<FacturaBase> FacturaBases {get; set;}
+        public DbSet<Receta> Recetas {get; set;}
         public DbSet<Empleado> Empleados {get; set;}        
         public DbSet<Cliente> Clientes {get; set;}    
         public DbSet<User> Users {get; set;}  

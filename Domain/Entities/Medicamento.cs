@@ -9,6 +9,7 @@ namespace Domain.Entities
     {
         public string NombreMedicamento { get; set; }
         public Double PrecioMedicamento {get; set; }
+        public bool RequiereReceta {get; set;}
         public int Stock {get; set;}
         public DateTime FechaExpiracion {get; set;}
         public int IdProveedorFK {get; set;}
@@ -18,5 +19,8 @@ namespace Domain.Entities
         public ICollection<MedicamentoCompra> MedicamentosCompras { get; set; }
         public ICollection<MedicamentoVenta> MedicamentoVentas {get; set;}
 
+
+        
     }
+
 }

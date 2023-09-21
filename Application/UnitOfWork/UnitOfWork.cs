@@ -8,7 +8,6 @@ namespace Application.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork, IDisposable
 {
-    private FacturaBaseRepository _facturaBase;
     private FacturaCompraRepository _facturaCompra;
     private FacturaVentaRepository _facturaVenta;
     private MedicamentoCompraRepository _medicamentoCompra;
@@ -112,15 +111,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
-    public IFacturaBase FacturaBases
-    {
-        get{
-            if(_facturaBase == null){
-                _facturaBase = new(_context);
-            }
-            return _facturaBase;
-        }
-    }
+    
 
  public IRol Roles
     {
