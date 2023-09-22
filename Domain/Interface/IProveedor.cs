@@ -10,7 +10,7 @@ namespace Domain.Interface;
     {
         Task<IEnumerable<Proveedor>> GetListWithName(string name);
         Task<IEnumerable<Proveedor>> GetPerProvSinFactura();
-        Task<IEnumerable<Proveedor>> GetPerProvConFactura();
-
+        Task<IEnumerable<Proveedor>> GetMedFrom2023();
+        Task<IEnumerable<Proveedor>> GetOnlyWithMedLessThan50();
         
     }

@@ -3,7 +3,8 @@ using Persistence.Data;
 using API.Extensions;
 using AspNetCoreRateLimit;
 using System.Reflection;
-
+using AutoMapper;
+using API.Profiles;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.|

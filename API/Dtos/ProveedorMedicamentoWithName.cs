@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Domain.Entities;
 
 namespace API.Dtos;
-public class Vendidos
+public class VendidosDto
 {
     public string NombreProducto {get; set;}
 }
-public class MedicamentoWithName
+public class ProveedorMedicamentoWithName
 {
     public string NombreProveedor{get; set;}
-    public IEnumerable<Vendidos> Vendidos {get; set;}
+    public IEnumerable<VendidosDto> Vendidos {get; set;}
 }
