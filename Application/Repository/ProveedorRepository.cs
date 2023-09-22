@@ -20,11 +20,15 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
         .Include(e => e.Medicamentos)
         .ToListAsync();
     }
-    public async Task<IEnumerable<Proveedor>> GetPerProv(){
+    public async Task<IEnumerable<Proveedor>> GetPerProvSinFactura(){
+        return await  _context.Set<Proveedor>()
+        .Include(e => e.Medicamentos)
+        .ThenInclude(e => e.MedicamentosCompras)
+        .ToListAsync();
+    }
+    public async Task<IEnumerable<Proveedor>> GetPerProvConFactura(){
         return await  _context.Set<Proveedor>()
         .Include(e => e.FacturaCompras)
-        .ThenInclude(e => e.MedicamentosComprados)
-        .ThenInclude(e => e.Medicamento)
         .ToListAsync();
     }
     public async Task<IEnumerable<Proveedor>> GetListWithName(string name){

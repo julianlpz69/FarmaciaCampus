@@ -9,5 +9,8 @@ namespace Domain.Interface;
     public interface IProveedor : IGenericRepository<Proveedor>
     {
         Task<IEnumerable<Proveedor>> GetListWithName(string name);
-        Task<IEnumerable<Proveedor>> GetPerProv();
+        Task<IEnumerable<Proveedor>> GetPerProvSinFactura();
+        Task<IEnumerable<Proveedor>> GetPerProvConFactura();
+
+        
     }

@@ -18,7 +18,7 @@ builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 builder.Services.ConfigureApiVersioning();
 builder.Services.ConfigureRatelimiting();
 builder.Services.AddJwt(builder.Configuration);
-
+builder.Services.ConfigureJson();
 builder.Services.AddDbContext<FarmaciaDBContext>(options =>{
     string connectionString = builder.Configuration.GetConnectionString("ConexMysql");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));

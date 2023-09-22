@@ -25,7 +25,12 @@ namespace API.Extensions
                         .AllowAnyHeader());
         });
         
-
+    public static void ConfigureJson(this IServiceCollection services){
+        services.AddControllersWithViews()
+        .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    );
+    }
     public static void AddAplicacionServices(this IServiceCollection services)
     {
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();

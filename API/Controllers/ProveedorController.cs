@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using API.Dtos;
+using Microsoft.EntityFrameworkCore;
 namespace API.Controllers;
 
 public class ProveedorController : BaseApiController
@@ -39,7 +40,7 @@ public class ProveedorController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProveedorListVendidosDto>>> Get1(){
-        var datos = await _unitOfWork.Proveedores.GetPerProv();
+        var datos = await _unitOfWork.Proveedores.GetPerProvSinFactura();
         var dto = datos.ToList().Select( e => {
             ProveedorListVendidosDto vendidos = new ProveedorListVendidosDto{
                 NombreProveedor = e.NombreProveedor,
@@ -50,6 +51,21 @@ public class ProveedorController : BaseApiController
                         Cantidad = cant
                     };
                 })
+            };
+            return vendidos;
+        }).ToList();
+        return Ok(dto);
+    }
+    [HttpGet("TotalAnualPerProv")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ProveedorVentasAnualesDto>>> Get(){
+        var datos = await _unitOfWork.Proveedores.GetPerProvConFactura();
+        var dto = datos.Select( e => {
+            double suma = e.FacturaCompras.Sum(e => e.ValorTotal);
+            ProveedorVentasAnualesDto vendidos = new (){
+                NombreProveedor = e.NombreProveedor,
+                totalAnual = suma
             };
             return vendidos;
         }).ToList();
