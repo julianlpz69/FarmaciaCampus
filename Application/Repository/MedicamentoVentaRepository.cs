@@ -3,6 +3,7 @@ using Domain.Interface;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
+
 namespace Application.Repository;
 
 public class MedicamentoVentaRepository : GenericRepository<MedicamentoVenta>, IMedicamentoVenta
@@ -14,50 +15,32 @@ public class MedicamentoVentaRepository : GenericRepository<MedicamentoVenta>, I
         _context = context;
     }
 
-    public int CalcularTotalVentasParacetamol()
+    public async Task<string> CantidadVentasParacetamol()
     {
         string nombreMedicamento = "Paracetamol";
-
-        var totalVentas = _context.MedicamentosVentas
+        int cantidadTotalVentas = await _context.MedicamentosVentas
             .Where(mv => mv.Medicamento.NombreMedicamento.ToLower() == nombreMedicamento.ToLower())
-            .ToList();
+            .SumAsync(mv => mv.CantidadVendida);
 
-        var veces = totalVentas.Count();   
-
-        return veces;
+        return "La cantidad total de veces que se ha vendido " + nombreMedicamento + " es: " + cantidadTotalVentas;
     }
 
-    public double CalcularTotalDineroRecaudadoPorVentas()
-    {
-        var totalDineroRecaudado = _context.MedicamentosVentas
-            .Sum(mv => mv.Precio * mv.CantidadVendida);
 
-        return totalDineroRecaudado;
-    }
-    public async Task<IEnumerable<Cliente>> GetPacientesQueCompraronParacetamolAsync()
+    public async Task<IEnumerable<Cliente>> GetPacientesParacetamolAsync()
     {
 
         string nombreMedicamento = "Paracetamol";
         var pacientesQueCompraronParacetamol = await _context.MedicamentosVentas
             .Where(mv => mv.Medicamento.NombreMedicamento.ToLower() == nombreMedicamento.ToLower())
-            .Select(mv => mv.FacturaVenta.Cliente) 
-            .Distinct() 
-            .ToListAsync(); 
+            .Select(mv => mv.FacturaVenta.Cliente)
+            .Distinct()
+            .ToListAsync();
 
         return pacientesQueCompraronParacetamol;
     }
 
-    public async Task<IEnumerable<FacturaBase>> GetMedicamentosVendidosMarzoAsync()
-    {
-        DateTime inicioMarzo = new DateTime(2023, 03, 01);
-        DateTime FinalMarzo = new DateTime(2023, 03, 31);
 
-        var medicamentosVendidosMarzo = await _context.FacturaBases
-        .Where(fb => fb.FechaSalida > inicioMarzo && fb.FechaSalida < FinalMarzo)
-        .ToListAsync();
-
-        return medicamentosVendidosMarzo;
-    }
 }
+
 
 

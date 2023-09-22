@@ -22,10 +22,10 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-        public async Task<ActionResult<IEnumerable<MedicamentoVentaDto>>> Get()
+        public async Task<ActionResult<IEnumerable<FacturaVentaDto>>> Get()
         {
-            var medicamentoVenta = await _unitOfWork.MedicamentoVentas.GetAllAsync();
-            return mapper.Map<List<MedicamentoVentaDto>>(medicamentoVenta);
+            var FacturaVenta = await _unitOfWork.FacturaVentas.GetAllAsync();
+            return mapper.Map<List<FacturaVentaDto>>(FacturaVenta);
 
         }
 
@@ -33,36 +33,43 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<MedicamentoVenta>> Post(MedicamentoVentaDto MedicamentoVentaDto)
+        public async Task<ActionResult<FacturaVenta>> Post(FacturaVentaDto FacturaVentaDto)
         {
-            var MedicamentoVenta = this.mapper.Map<MedicamentoVenta>(MedicamentoVentaDto);
-            _unitOfWork.MedicamentoVentas.Add(MedicamentoVenta);
+            var FacturaVenta = this.mapper.Map<FacturaVenta>(FacturaVentaDto);
+            _unitOfWork.FacturaVentas.Add(FacturaVenta);
             await _unitOfWork.SaveAsync();
 
-            if (MedicamentoVenta == null)
+            if (FacturaVenta == null)
             {
                 return BadRequest();
             }
-            MedicamentoVentaDto.Id = MedicamentoVenta.Id;
-            return CreatedAtAction(nameof(Post), new { id = MedicamentoVentaDto.Id }, MedicamentoVenta);
+            FacturaVentaDto.Id = FacturaVenta.Id;
+            return CreatedAtAction(nameof(Post), new { id = FacturaVentaDto.Id }, FacturaVenta);
         }
 
-
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<FacturaVentaDto>> Get(int id)
+        {
+            var FacturaVenta = await _unitOfWork.FacturaVentas.GetById(id);
+            return mapper.Map<FacturaVentaDto>(FacturaVenta);
+        }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-        public async Task<ActionResult<MedicamentoVentaDto>> Put(int id, [FromBody] MedicamentoVentaDto MedicamentoVentaDto)
+        public async Task<ActionResult<FacturaVentaDto>> Put(int id, [FromBody] FacturaVentaDto FacturaVentaDto)
         {
-            if (MedicamentoVentaDto == null)
+            if (FacturaVentaDto == null)
                 return NotFound();
 
-            var MedicamentoVenta = this.mapper.Map<MedicamentoVenta>(MedicamentoVentaDto);
-            _unitOfWork.MedicamentoVentas.Update(MedicamentoVenta);
+            var FacturaVenta = this.mapper.Map<FacturaVenta>(FacturaVentaDto);
+            _unitOfWork.FacturaVentas.Update(FacturaVenta);
             await _unitOfWork.SaveAsync();
-            return MedicamentoVentaDto;
+            return FacturaVentaDto;
         }
 
 
@@ -73,14 +80,70 @@ namespace API.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var MedicamentoVenta = await _unitOfWork.MedicamentoVentas.GetById(id);
-            if (MedicamentoVenta == null)
+            var FacturaVenta = await _unitOfWork.FacturaVentas.GetById(id);
+            if (FacturaVenta == null)
                 return NotFound();
 
-            _unitOfWork.MedicamentoVentas.Remove(MedicamentoVenta);
+            _unitOfWork.FacturaVentas.Remove(FacturaVenta);
             await _unitOfWork.SaveAsync();
             return NoContent();
         }
 
+        [HttpGet("paracetamol")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<string> CantidadParacetamol()
+        {
+            var cantidadMedicamentos = await _unitOfWork.MedicamentoVentas.CantidadVentasParacetamol();
+            return cantidadMedicamentos;
+        }
+
+        [HttpGet("Total")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<string> TotalVentas()
+        {
+            var TotalVentas = await _unitOfWork.FacturaVentas.TotalVentas();
+            return TotalVentas;
+        }
+
+        [HttpGet("Clientes/Paracetamol")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IEnumerable<ClienteDto>> ClientesParacetamolAsync ()
+        {
+            var Clientes = await _unitOfWork.MedicamentoVentas.GetPacientesParacetamolAsync();
+             return mapper.Map<List<ClienteDto>>(Clientes);
+        }
+
+        [HttpGet("Total/Marzo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<int> VentasMarzo()
+        {
+            var TotalVentas = await _unitOfWork.FacturaVentas.VentasMarzoAsync();
+            return TotalVentas;
+        }
+        [HttpGet("menos-vendido")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<MedicamentoDto> MenosVendido()
+        {
+            var Medicamento = await _unitOfWork.FacturaVentas.MedicamentoMenosVendidoAsync();
+            return mapper.Map<MedicamentoDto>(Medicamento);
+        }
+
+        [HttpGet("ventas-por-empleado/{id}")]
+        public async Task<ActionResult<EmpleadoVentaDto>> ObtenerVentasPorEmpleadoEn2023(int id)
+        {
+            int cantidadVentas = await _unitOfWork.FacturaVentas.VentasEmpleado2023Async(id);
+
+            // Realiza la conversión al DTO aquí
+            var empleado = await _unitOfWork.Empleados.GetById(id);
+            var empleadoDto = mapper.Map<EmpleadoVentaDto>(empleado);
+            empleadoDto.CantidadVentas = cantidadVentas;
+
+            return empleadoDto;
+        }
     }
 }
