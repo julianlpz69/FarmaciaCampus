@@ -11,8 +11,8 @@ using Persistence.Data;
 namespace Persistence.Data.Migrations
 {
     [DbContext(typeof(FarmaciaDBContext))]
-    [Migration("20230920202415_TerceraMigracion")]
-    partial class TerceraMigracion
+    [Migration("20230922015011_mig1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -188,57 +188,27 @@ namespace Persistence.Data.Migrations
                     b.ToTable("Empleado", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.FacturaBase", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("CodigoCompra")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<DateTime>("FechaSalida")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("IdMetodoCompra")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MetodoCompraId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalIva")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CodigoCompra")
-                        .IsUnique();
-
-                    b.HasIndex("MetodoCompraId");
-
-                    b.ToTable("factura_base", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.FacturaCompra", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("IdFacturaBaseFk")
+                    b.Property<DateTime>("FechaCompra")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("IdMetodoPagoFK")
                         .HasColumnType("int");
 
                     b.Property<int>("IdProveedorFk")
                         .HasColumnType("int");
 
+                    b.Property<double>("ValorTotal")
+                        .HasColumnType("double");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdFacturaBaseFk");
+                    b.HasIndex("IdMetodoPagoFK");
 
                     b.HasIndex("IdProveedorFk");
 
@@ -251,17 +221,20 @@ namespace Persistence.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("FechaVenta")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("IdClienteFK")
                         .HasColumnType("int");
 
                     b.Property<int>("IdEmpleadoFK")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdFacturaBaseFk")
+                    b.Property<int>("IdMetodoPagoFK")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MetodoCompraId")
-                        .HasColumnType("int");
+                    b.Property<double>("ValorTotal")
+                        .HasColumnType("double");
 
                     b.HasKey("Id");
 
@@ -269,9 +242,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex("IdEmpleadoFK");
 
-                    b.HasIndex("IdFacturaBaseFk");
-
-                    b.HasIndex("MetodoCompraId");
+                    b.HasIndex("IdMetodoPagoFK");
 
                     b.ToTable("factura_venta", (string)null);
                 });
@@ -314,6 +285,9 @@ namespace Persistence.Data.Migrations
                     b.Property<decimal>("PrecioMedicamento")
                         .HasColumnType("decimal(10,6)");
 
+                    b.Property<bool>("RequiereReceta")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
@@ -335,7 +309,7 @@ namespace Persistence.Data.Migrations
                     b.Property<int>("CantidadComprada")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdCompraFK")
+                    b.Property<int>("IdFacturaCompraFK")
                         .HasColumnType("int");
 
                     b.Property<int>("IdMedicamentoFK")
@@ -346,7 +320,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCompraFK");
+                    b.HasIndex("IdFacturaCompraFK");
 
                     b.HasIndex("IdMedicamentoFK");
 
@@ -360,9 +334,6 @@ namespace Persistence.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("CantidadVendida")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdFacturaFk")
                         .HasColumnType("int");
 
                     b.Property<int>("IdFacturaVentaFK")
@@ -383,7 +354,7 @@ namespace Persistence.Data.Migrations
                     b.ToTable("medicamento_venta", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.MetodoCompra", b =>
+            modelBuilder.Entity("Domain.Entities.MetodoPago", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -439,6 +410,121 @@ namespace Persistence.Data.Migrations
                     b.HasIndex("IdDireccionFK");
 
                     b.ToTable("proveedor", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Receta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("FacturaVentaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdFacturaVentaFK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remitente")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacturaVentaId");
+
+                    b.ToTable("receta", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshToken", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Rol", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("NombreRol")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
+                        .HasColumnName("rolName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("rol", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar")
+                        .HasColumnName("email");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
+                        .HasColumnName("username");
+
+                    b.Property<string>("UserPassword")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar")
+                        .HasColumnName("password");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("user", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserRol", b =>
+                {
+                    b.Property<int>("IdUser")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdRol")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdUser", "IdRol");
+
+                    b.HasIndex("IdRol");
+
+                    b.ToTable("userRol", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Ciudad", b =>
@@ -504,20 +590,11 @@ namespace Persistence.Data.Migrations
                     b.Navigation("Direccion");
                 });
 
-            modelBuilder.Entity("Domain.Entities.FacturaBase", b =>
-                {
-                    b.HasOne("Domain.Entities.MetodoCompra", "MetodoCompra")
-                        .WithMany()
-                        .HasForeignKey("MetodoCompraId");
-
-                    b.Navigation("MetodoCompra");
-                });
-
             modelBuilder.Entity("Domain.Entities.FacturaCompra", b =>
                 {
-                    b.HasOne("Domain.Entities.FacturaBase", "FacturaBase")
-                        .WithMany("FacturaCompras")
-                        .HasForeignKey("IdFacturaBaseFk")
+                    b.HasOne("Domain.Entities.MetodoPago", "MetodoPago")
+                        .WithMany("FacturasCompras")
+                        .HasForeignKey("IdMetodoPagoFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -527,7 +604,7 @@ namespace Persistence.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("FacturaBase");
+                    b.Navigation("MetodoPago");
 
                     b.Navigation("Proveedor");
                 });
@@ -546,21 +623,17 @@ namespace Persistence.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.FacturaBase", "FacturaBase")
-                        .WithMany("FacturaVentas")
-                        .HasForeignKey("IdFacturaBaseFk")
+                    b.HasOne("Domain.Entities.MetodoPago", "MetodoPago")
+                        .WithMany("FacturasVentas")
+                        .HasForeignKey("IdMetodoPagoFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Domain.Entities.MetodoCompra", null)
-                        .WithMany("Facturas")
-                        .HasForeignKey("MetodoCompraId");
 
                     b.Navigation("Cliente");
 
                     b.Navigation("Empleado");
 
-                    b.Navigation("FacturaBase");
+                    b.Navigation("MetodoPago");
                 });
 
             modelBuilder.Entity("Domain.Entities.Medicamento", b =>
@@ -584,9 +657,9 @@ namespace Persistence.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.MedicamentoCompra", b =>
                 {
-                    b.HasOne("Domain.Entities.FacturaCompra", "Compra")
-                        .WithMany("MedicamentoCompras")
-                        .HasForeignKey("IdCompraFK")
+                    b.HasOne("Domain.Entities.FacturaCompra", "FacturaCompra")
+                        .WithMany("MedicamentosComprados")
+                        .HasForeignKey("IdFacturaCompraFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -596,7 +669,7 @@ namespace Persistence.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Compra");
+                    b.Navigation("FacturaCompra");
 
                     b.Navigation("Medicamento");
                 });
@@ -604,7 +677,7 @@ namespace Persistence.Data.Migrations
             modelBuilder.Entity("Domain.Entities.MedicamentoVenta", b =>
                 {
                     b.HasOne("Domain.Entities.FacturaVenta", "FacturaVenta")
-                        .WithMany("MedicamentoVentas")
+                        .WithMany("MedicamentosVendidos")
                         .HasForeignKey("IdFacturaVentaFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -629,6 +702,45 @@ namespace Persistence.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Direccion");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Receta", b =>
+                {
+                    b.HasOne("Domain.Entities.FacturaVenta", "FacturaVenta")
+                        .WithMany()
+                        .HasForeignKey("FacturaVentaId");
+
+                    b.Navigation("FacturaVenta");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserRol", b =>
+                {
+                    b.HasOne("Domain.Entities.Rol", "Rol")
+                        .WithMany("UsersRols")
+                        .HasForeignKey("IdRol")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("UsersRols")
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rol");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.CargoEmpleado", b =>
@@ -665,21 +777,14 @@ namespace Persistence.Data.Migrations
                     b.Navigation("FacturaVentas");
                 });
 
-            modelBuilder.Entity("Domain.Entities.FacturaBase", b =>
-                {
-                    b.Navigation("FacturaCompras");
-
-                    b.Navigation("FacturaVentas");
-                });
-
             modelBuilder.Entity("Domain.Entities.FacturaCompra", b =>
                 {
-                    b.Navigation("MedicamentoCompras");
+                    b.Navigation("MedicamentosComprados");
                 });
 
             modelBuilder.Entity("Domain.Entities.FacturaVenta", b =>
                 {
-                    b.Navigation("MedicamentoVentas");
+                    b.Navigation("MedicamentosVendidos");
                 });
 
             modelBuilder.Entity("Domain.Entities.Marca", b =>
@@ -694,9 +799,11 @@ namespace Persistence.Data.Migrations
                     b.Navigation("MedicamentosCompras");
                 });
 
-            modelBuilder.Entity("Domain.Entities.MetodoCompra", b =>
+            modelBuilder.Entity("Domain.Entities.MetodoPago", b =>
                 {
-                    b.Navigation("Facturas");
+                    b.Navigation("FacturasCompras");
+
+                    b.Navigation("FacturasVentas");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pais", b =>
@@ -709,6 +816,18 @@ namespace Persistence.Data.Migrations
                     b.Navigation("FacturaCompras");
 
                     b.Navigation("Medicamentos");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Rol", b =>
+                {
+                    b.Navigation("UsersRols");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("RefreshTokens");
+
+                    b.Navigation("UsersRols");
                 });
 #pragma warning restore 612, 618
         }
