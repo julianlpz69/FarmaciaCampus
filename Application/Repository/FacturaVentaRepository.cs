@@ -35,8 +35,9 @@ public class FacturaVentaRepository : GenericRepository<FacturaVenta>, IFacturaV
 
         int medicamentos = await _context.FacturaVentas
             .Where(fv => fv.FechaVenta >= InicioMarzo && fv.FechaVenta <= FinMarzo)
-            .SelectMany(fv => fv.MedicamentosVendidos)
-            .SumAsync(mv => mv.CantidadVendida);
+            .Select(fv => fv.MedicamentosVendidos)
+            .CountAsync();
+  
 
         return medicamentos;
     }
@@ -64,6 +65,10 @@ public class FacturaVentaRepository : GenericRepository<FacturaVenta>, IFacturaV
 
         return cantidadVentas;
     }
+
+
+
+  
 
 
 }

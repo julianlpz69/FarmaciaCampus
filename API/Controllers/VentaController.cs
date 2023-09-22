@@ -145,5 +145,37 @@ namespace API.Controllers
 
             return empleadoDto;
         }
+
+
+        [HttpGet("empleado/mas-de-5")]
+        public async Task<IEnumerable<EmpleadoVentaDto>> empleadosmas5ventas()
+        {
+            var empleados = await _unitOfWork.Empleados.EmpleadosMas5Ventas();
+            var emp = new List<EmpleadoVentaDto>();
+            foreach (var empleado in empleados)
+            {
+                int cantidadVentas = await _unitOfWork.FacturaVentas.VentasEmpleado2023Async(empleado.Id);
+                var empleadoDto = mapper.Map<EmpleadoVentaDto>(empleado);
+                empleadoDto.CantidadVentas = cantidadVentas;
+                emp.Add(empleadoDto);
+            }
+
+            return emp;
+        }
+        [HttpGet("empleado/menos-de-5")]
+        public async Task<IEnumerable<EmpleadoVentaDto>> empleadosmenos5ventas()
+        {
+            var empleados = await _unitOfWork.Empleados.EmpleadosMenos5Ventas();
+            var emp = new List<EmpleadoVentaDto>();
+            foreach (var empleado in empleados)
+            {
+                int cantidadVentas = await _unitOfWork.FacturaVentas.VentasEmpleado2023Async(empleado.Id);
+                var empleadoDto = mapper.Map<EmpleadoVentaDto>(empleado);
+                empleadoDto.CantidadVentas = cantidadVentas;
+                emp.Add(empleadoDto);
+            }
+
+            return emp;
+        }
     }
 }
