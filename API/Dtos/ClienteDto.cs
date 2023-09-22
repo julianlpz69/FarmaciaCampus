@@ -14,6 +14,6 @@ namespace API.Dtos
     public string Cedula {get; set;}
     public string Telefono {get; set;}
     public int IdDireccionFk {get; set;}
-    public ICollection<FacturaVenta> FacturaVentas {get; set;}
+    public List<FacturaVentaDto> FacturaVentas {get; set;}
     }
 }
