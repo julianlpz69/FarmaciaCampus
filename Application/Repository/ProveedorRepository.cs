@@ -2,6 +2,7 @@
 
 using Domain.Entities;
 using Domain.Interface;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
 namespace Application.Repository;
@@ -22,14 +23,14 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
     public async Task<IEnumerable<Proveedor>> GetPerProv(){
         return await  _context.Set<Proveedor>()
         .Include(e => e.FacturaCompras)
-        .ThenInclude(e => e.MedicamentoCompras)
+        .ThenInclude(e => e.MedicamentosComprados)
         .ThenInclude(e => e.Medicamento)
         .ToListAsync();
     }
     public async Task<IEnumerable<Proveedor>> GetListWithName(string name){
         var datos = await  _context.Set<Proveedor>()
         .Include(e => e.FacturaCompras)
-        .ThenInclude(e => e.MedicamentoCompras)
+        .ThenInclude(e => e.MedicamentosComprados)
         .ThenInclude(e => e.Medicamento)
         .Where(e => e.NombreProveedor == name)
         .ToListAsync();
