@@ -19,5 +19,6 @@ public class FacturaVenta : BaseEntity
     public DateTime FechaVenta { get; set; }
     public int IdMetodoPagoFK {get; set;}
     public MetodoPago MetodoPago {get; set;}
+    public ICollection<Receta>  Recetas { get; set; }
  
 }
