@@ -8,6 +8,7 @@ namespace Domain.Interface;
 
 public interface IMedicamentoVenta : IGenericRepository<MedicamentoVenta> 
 {
-   
-    
+
+    public Task<string> CantidadVentasParacetamol();
+    public Task<IEnumerable<Cliente>> GetPacientesParacetamolAsync();
 }

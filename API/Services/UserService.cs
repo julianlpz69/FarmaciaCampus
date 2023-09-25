@@ -62,7 +62,7 @@ namespace API.Services
         }
         else
         {
-            return $"User {registerDto.UserName} already registered.";
+            return $"Ya Registrado";
         }
     }
 
