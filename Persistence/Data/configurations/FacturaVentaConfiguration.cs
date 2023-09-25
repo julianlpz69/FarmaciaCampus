@@ -11,7 +11,6 @@ public class FacturaVentaConfiguration : IEntityTypeConfiguration<FacturaVenta>
         builder.ToTable("factura_venta");
         
         builder.Property(x => x.ValorTotal).HasColumnType("double").IsRequired();
-        builder.Property(x => x.ValorTotal).HasColumnType("double").IsRequired();
    
         builder.HasOne(p => p.Empleado)
             .WithMany(p => p.FacturaVentas)
@@ -24,6 +23,7 @@ public class FacturaVentaConfiguration : IEntityTypeConfiguration<FacturaVenta>
         builder.HasOne(p => p.MetodoPago)
             .WithMany(p => p.FacturasVentas)
             .HasForeignKey(p => p.IdMetodoPagoFK);
+            
         
      
     }

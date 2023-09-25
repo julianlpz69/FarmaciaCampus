@@ -15,8 +15,16 @@ namespace Persistence.Data.configurations
             builder.ToTable("receta");
     
             builder.Property(e => e.Remitente)
-                .HasMaxLength(50);
-    
+                .HasMaxLength(50)
+                .IsRequired();
+
+            builder.Property(e => e.Descripcion)
+            .HasMaxLength(200)
+            .IsRequired();
+
+            builder.HasOne(p => p.FacturaVenta)
+            .WithMany(p => p.Recetas)
+            .HasForeignKey(p => p.IdFacturaVentaFK);
         }
     }
 }
