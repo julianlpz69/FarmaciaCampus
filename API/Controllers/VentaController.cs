@@ -3,6 +3,8 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using System.Linq;
 
 namespace API.Controllers
 {
@@ -133,49 +135,38 @@ namespace API.Controllers
             return mapper.Map<MedicamentoDto>(Medicamento);
         }
 
-        [HttpGet("ventas-por-empleado/{id}")]
-        public async Task<ActionResult<EmpleadoVentaDto>> ObtenerVentasPorEmpleadoEn2023(int id)
+        [HttpGet("TotalVentasPorMes/{numeroMes}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<MesVentaDto>> TotalVentasPorMesEn2023(int numeroMes)
         {
-            int cantidadVentas = await _unitOfWork.FacturaVentas.VentasEmpleado2023Async(id);
+            var totalVentas = await _unitOfWork.FacturaVentas.TotalVentasPorMesEn2023Async(numeroMes);
 
-            // Realiza la conversión al DTO aquí
-            var empleado = await _unitOfWork.Empleados.GetById(id);
-            var empleadoDto = mapper.Map<EmpleadoVentaDto>(empleado);
-            empleadoDto.CantidadVentas = cantidadVentas;
-
-            return empleadoDto;
-        }
-
-
-        [HttpGet("empleado/mas-de-5")]
-        public async Task<IEnumerable<EmpleadoVentaDto>> empleadosmas5ventas()
-        {
-            var empleados = await _unitOfWork.Empleados.EmpleadosMas5Ventas();
-            var emp = new List<EmpleadoVentaDto>();
-            foreach (var empleado in empleados)
+            var mesVentaDto = new MesVentaDto
             {
-                int cantidadVentas = await _unitOfWork.FacturaVentas.VentasEmpleado2023Async(empleado.Id);
-                var empleadoDto = mapper.Map<EmpleadoVentaDto>(empleado);
-                empleadoDto.CantidadVentas = cantidadVentas;
-                emp.Add(empleadoDto);
-            }
+                Mes = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(numeroMes),
+                TotalMedicamentosVendidos = totalVentas
+            };
 
-            return emp;
+            return mesVentaDto;
         }
-        [HttpGet("empleado/menos-de-5")]
-        public async Task<IEnumerable<EmpleadoVentaDto>> empleadosmenos5ventas()
+        [HttpGet("vendidos-cada-mes")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<MedicamentoDto>>> vendidosCadaMesEn2023()
         {
-            var empleados = await _unitOfWork.Empleados.EmpleadosMenos5Ventas();
-            var emp = new List<EmpleadoVentaDto>();
-            foreach (var empleado in empleados)
-            {
-                int cantidadVentas = await _unitOfWork.FacturaVentas.VentasEmpleado2023Async(empleado.Id);
-                var empleadoDto = mapper.Map<EmpleadoVentaDto>(empleado);
-                empleadoDto.CantidadVentas = cantidadVentas;
-                emp.Add(empleadoDto);
-            }
+            var medicamentos = await _unitOfWork.FacturaVentas.MedicamentosVendidosCadaMesEn2023Async();
 
-            return emp;
+            return mapper.Map<List<MedicamentoDto>>(medicamentos);
+            
         }
+
+        [HttpGet("Total/primer-trimestre")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<int> VentasPrimerTrimestre()
+        {
+            var TotalVentas = await _unitOfWork.FacturaVentas.VentasPrimerTrimestre2023Async();
+            return TotalVentas;
+        }
+
     }
 }
