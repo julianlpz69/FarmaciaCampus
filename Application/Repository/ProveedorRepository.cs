@@ -17,14 +17,18 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
     public override async Task<IEnumerable<Proveedor>> GetAllAsync()
     {
         return await _context.Set<Proveedor>()
-        .Include(e => e.Medicamentos)
+        .Include(e => e.Direccion)
         .ToListAsync();
     }
-    public async Task<IEnumerable<Proveedor>> GetPerProv(){
+    public async Task<IEnumerable<Proveedor>> GetPerProvSinFactura(){
+        return await  _context.Set<Proveedor>()
+        .Include(e => e.Medicamentos)
+        .ThenInclude(e => e.MedicamentosCompras)
+        .ToListAsync();
+    }
+    public async Task<IEnumerable<Proveedor>> GetMedFrom2023(){
         return await  _context.Set<Proveedor>()
         .Include(e => e.FacturaCompras)
-        .ThenInclude(e => e.MedicamentosComprados)
-        .ThenInclude(e => e.Medicamento)
         .ToListAsync();
     }
     public async Task<IEnumerable<Proveedor>> GetListWithName(string name){
@@ -35,5 +39,21 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
         .Where(e => e.NombreProveedor == name)
         .ToListAsync();
         return datos;
+    }
+    public async Task<IEnumerable<Proveedor>> GetOnlyWithMedLessThan50(){
+        return await _context.Set<Proveedor>()
+        .Include(e => e.Medicamentos.Where(e => e.Stock < 50))
+        .ToListAsync();
+    }
+public async Task<IEnumerable<Proveedor>> GetProveedoresCon5MedicamentosVendidos(){
+        var data = await _context.Set<Proveedor>()
+        .Include(e => e.FacturaCompras)
+        .ThenInclude(e => e.MedicamentosComprados)
+        .ThenInclude(e => e.Medicamento)
+        .ToListAsync();
+        return data.Where(e => e.Medicamentos
+                .Select(f => f.NombreMedicamento.ToLower())
+                .ToHashSet<string>().Count > 5)
+            .ToList() ?? data; 
     }
 }
