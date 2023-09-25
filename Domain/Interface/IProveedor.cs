@@ -12,5 +12,5 @@ namespace Domain.Interface;
         Task<IEnumerable<Proveedor>> GetPerProvSinFactura();
         Task<IEnumerable<Proveedor>> GetMedFrom2023();
         Task<IEnumerable<Proveedor>> GetOnlyWithMedLessThan50();
-        
+        Task<IEnumerable<Proveedor>> GetProveedoresCon5MedicamentosVendidos();
     }

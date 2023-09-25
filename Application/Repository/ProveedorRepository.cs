@@ -45,4 +45,15 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
         .Include(e => e.Medicamentos.Where(e => e.Stock < 50))
         .ToListAsync();
     }
+public async Task<IEnumerable<Proveedor>> GetProveedoresCon5MedicamentosVendidos(){
+        var data = await _context.Set<Proveedor>()
+        .Include(e => e.FacturaCompras)
+        .ThenInclude(e => e.MedicamentosComprados)
+        .ThenInclude(e => e.Medicamento)
+        .ToListAsync();
+        return data.Where(e => e.Medicamentos
+                .Select(f => f.NombreMedicamento.ToLower())
+                .ToHashSet<string>().Count > 5)
+            .ToList() ?? data; 
+    }
 }

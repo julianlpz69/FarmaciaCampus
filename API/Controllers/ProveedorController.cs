@@ -63,4 +63,11 @@ public class ProveedorController : BaseApiController
         var datos = await _unitOfWork.Proveedores.GetOnlyWithMedLessThan50();
         return _mapper.Map<List<ProveedorMedWithLess50Dto>>(datos);
     }
+    [HttpGet("provmorethan5")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<Proveedor>>> GetProvMorethan5Med(){
+        var datos = await _unitOfWork.Proveedores.GetProveedoresCon5MedicamentosVendidos();
+        return Ok(datos);
+    }
 }
