@@ -24,13 +24,29 @@ public class EmpleadoRepository : GenericRepository<Empleado>, IEmpleado
     }
     public async Task<IEnumerable<Empleado>> EmpleadosMenos5Ventas()
     {
-        DateTime fechaInicio2023 = new DateTime(2023, 1, 1);
-        DateTime fechaFin2023 = new DateTime(2023, 12, 31);
         var empleados = await _context.Empleados
-        .Where(fv => fv.FacturaVentas.Where(f => f.FechaVenta >= fechaInicio2023 && f.FechaVenta <= fechaFin2023).Count() < 5)
+        .Where(fv => fv.FacturaVentas.Where(f => f.FechaVenta.Year == 2023).Count() < 5)
         .ToListAsync();
 
         return empleados;
     }
 
+    public async Task<IEnumerable<Empleado>> EmpleadosSinVentasAsync()
+    {
+        var empleadosSinVentas = await _context.Empleados
+            .Where(e => !e.FacturaVentas
+                .Any(v => v.FechaVenta.Year == 2023))
+            .ToListAsync();
+
+        return empleadosSinVentas;
+    }
+    public async Task<IEnumerable<Empleado>> EmpleadosSinVentasAbril2023Async()
+    {
+        var empleadosSinVentas = await _context.Empleados
+            .Where(e => !e.FacturaVentas
+                .Any(v => v.FechaVenta.Year == 2023 && v.FechaVenta.Month == 4))
+            .ToListAsync();
+
+        return empleadosSinVentas;
+    }
 }

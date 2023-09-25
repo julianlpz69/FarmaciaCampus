@@ -14,6 +14,7 @@ public class FacturaVenta : BaseEntity
         {
             return ValorTotal + (ValorTotal * 0.19); 
         }
+        private set {}
     }
     public DateTime FechaVenta { get; set; }
     public int IdMetodoPagoFK {get; set;}

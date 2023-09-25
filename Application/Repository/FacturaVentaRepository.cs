@@ -1,3 +1,4 @@
+using System.Globalization;
 using Domain.Entities;
 using Domain.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -30,26 +31,20 @@ public class FacturaVentaRepository : GenericRepository<FacturaVenta>, IFacturaV
     }
     public async Task<int> VentasMarzoAsync()
     {
-        DateTime InicioMarzo = new DateTime(2023, 3, 1);
-        DateTime FinMarzo = new DateTime(2023, 3, 31);
-
         int medicamentos = await _context.FacturaVentas
-            .Where(fv => fv.FechaVenta >= InicioMarzo && fv.FechaVenta <= FinMarzo)
+            .Where(fv => fv.FechaVenta.Year == 2023 && fv.FechaVenta.Month == 3)
             .Select(fv => fv.MedicamentosVendidos)
             .CountAsync();
-  
+
 
         return medicamentos;
     }
 
     public async Task<Medicamento> MedicamentoMenosVendidoAsync()
     {
-        DateTime fechaInicio2023 = new DateTime(2023, 1, 1);
-        DateTime fechaFin2023 = new DateTime(2023, 12, 31);
-
         var medicamentoMenosVendido = await _context.Medicamentos
             .OrderBy(m => m.MedicamentoVentas
-                .Where(mv => mv.FacturaVenta.FechaVenta >= fechaInicio2023 && mv.FacturaVenta.FechaVenta <= fechaFin2023)
+                .Where(mv => mv.FacturaVenta.FechaVenta.Year == 2023)
                 .Sum(mv => mv.CantidadVendida))
             .FirstOrDefaultAsync();
         return medicamentoMenosVendido;
@@ -57,18 +52,46 @@ public class FacturaVentaRepository : GenericRepository<FacturaVenta>, IFacturaV
 
     public async Task<int> VentasEmpleado2023Async(int empleadoId)
     {
-        DateTime fechaInicio2023 = new DateTime(2023, 1, 1);
-        DateTime fechaFin2023 = new DateTime(2023, 12, 31);
-
         var cantidadVentas = await _context.FacturaVentas
-            .CountAsync(fv => fv.IdEmpleadoFK == empleadoId && fv.FechaVenta >= fechaInicio2023 && fv.FechaVenta <= fechaFin2023);
+            .CountAsync(fv => fv.IdEmpleadoFK == empleadoId && fv.FechaVenta.Year == 2023);
 
         return cantidadVentas;
     }
 
+    public async Task<int> TotalVentasPorMesEn2023Async(int numeroMes)
+    {
+        var totalMedicamentosVendidos = await _context.FacturaVentas
+            .Where(f => f.FechaVenta.Year == 2023 && f.FechaVenta.Month == numeroMes)
+            .SelectMany(f => f.MedicamentosVendidos)
+            .SumAsync(m => m.CantidadVendida);
+
+        return totalMedicamentosVendidos;
+    }
+
+    public async Task<IEnumerable<Medicamento>> MedicamentosVendidosCadaMesEn2023Async()
+    {
+        var medicamentosVendidos = await _context.FacturaVentas
+            .Where(f => f.FechaVenta.Year == 2023)
+            .SelectMany(f => f.MedicamentosVendidos)
+            .GroupBy(m => m.Medicamento)
+            .Where(g => g.Select(m => m.FacturaVenta.FechaVenta.Month).Distinct().Count() == 12)
+            .Select(g => g.Key)
+            .ToListAsync();
+
+        return medicamentosVendidos;
+    }
+
+    public async Task<int> VentasPrimerTrimestre2023Async()
+    {
+        int medicamentos = await _context.FacturaVentas
+            .Where(fv => fv.FechaVenta.Year == 2023 && fv.FechaVenta.Month >= 1 && fv.FechaVenta.Month <= 3)
+            .Select(fv => fv.MedicamentosVendidos)
+            .CountAsync();
 
 
-  
+        return medicamentos;
+    }
+
 
 
 }
