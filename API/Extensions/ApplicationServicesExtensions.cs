@@ -83,7 +83,7 @@ namespace API.Extensions
                         {
                             Endpoint = "*",
                             Period = "100s",
-                            Limit = 5
+                            Limit = 15
                         }
                     };
                 });

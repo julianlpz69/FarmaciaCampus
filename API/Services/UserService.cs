@@ -52,7 +52,7 @@ namespace API.Services
                 _unitOfWork.Users.Add(user);
                 await _unitOfWork.SaveAsync();
 
-                return $"User  {registerDto.UserName} has been registered successfully";
+                return $"Usuario Registrado Correctamente";
             }
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace API.Services
         }
         else
         {
-            return $"Ya Registrado";
+            return $"Usuario ya tiene Registro";
         }
     }
 
@@ -81,8 +81,14 @@ namespace API.Services
 
         if (user == null)
         {
+            dataUserDto.RefreshToken = "";
+            dataUserDto.RefreshTokenExpiry = DateTime.Now;
+            dataUserDto.UserToken = "";
+            dataUserDto.UserEmail = "";
+            dataUserDto.UserName = "";
+            dataUserDto.UserRoles = null;
             dataUserDto.EstadoAutenticado = false;
-            dataUserDto.Mensaje = $"User does not exist with username {model.Username}.";
+            dataUserDto.Mensaje = $"Usuario No Existe";
             return dataUserDto;
         }
 
@@ -102,6 +108,7 @@ namespace API.Services
             if (user.RefreshTokens.Any(a => a.IsActive))
             {
                 var activeRefreshToken = user.RefreshTokens.Where(a => a.IsActive == true).FirstOrDefault();
+                dataUserDto.Mensaje = "Usuario Existente";
                 dataUserDto.RefreshToken = activeRefreshToken.Token;
                 dataUserDto.RefreshTokenExpiry = activeRefreshToken.Expires;
             }
@@ -117,8 +124,14 @@ namespace API.Services
 
             return dataUserDto;
         }
+        dataUserDto.RefreshToken = "";
+            dataUserDto.RefreshTokenExpiry = DateTime.Now;
+            dataUserDto.UserToken = "";
+            dataUserDto.UserEmail = "";
+            dataUserDto.UserName = "";
+            dataUserDto.UserRoles = null;
         dataUserDto.EstadoAutenticado = false;
-        dataUserDto.Mensaje = $"Credenciales incorrectas para el usuario {user.UserName}.";
+        dataUserDto.Mensaje = $"Credenciales incorrectas para el usuario";
         return dataUserDto;
     }
 

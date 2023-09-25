@@ -23,7 +23,6 @@ public class UserController : BaseApiController
     }
 
     [HttpPost("token")]
-    [MapToApiVersion("1.1")]
     public async Task<IActionResult> GetTokenAsync(LoginDto model)
     {
         var result = await _userService.GetTokenAsync(model);
