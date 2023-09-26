@@ -58,7 +58,9 @@ namespace API.Profiles
                 NombreProducto = e.NombreMedicamento 
                 })))
             .ReverseMap();
-
+            // proveedore que han vendido almenos 5 medicamentos diferentes el año 2023 
+            CreateMap<Proveedor, ProveedorWithMoreThan5med>()
+            .ForMember(dest => dest.MedicamentoDtos, opt => opt.MapFrom(e =>e.Medicamentos.Where(e => e.MedicamentosCompras.Count > 0)));
             // Proveedores con medicamentos con menos de 50 elementos en stock
             CreateMap<Proveedor, ProveedorMedWithLess50Dto>()
             .ForMember(dest => dest.Medicamento, opt => opt.MapFrom(e => e.Medicamentos.Select(e => new MedicamentoDto{
