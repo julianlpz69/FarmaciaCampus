@@ -29,7 +29,7 @@ namespace Application.Repository
                     Cliente = c,
                     TotalGastado = c.FacturaVentas
                         .Where(f => f.FechaVenta.Year == 2023)
-                        .Sum(f => f.ValorTotalMasIva)
+                        .Sum(f => f.ValorTotal * 1.19)
                 })
                 .OrderByDescending(c => c.TotalGastado)
                 .FirstOrDefault()?.Cliente;
@@ -41,7 +41,7 @@ namespace Application.Repository
         {
             double totalGastos = await _context.FacturaVentas
                 .Where(fv => fv.Cliente.Id == clienteId)
-                .SumAsync(fv => fv.ValorTotalMasIva);
+                .SumAsync(fv => fv.ValorTotal * 1.19);
 
             return totalGastos;
         }

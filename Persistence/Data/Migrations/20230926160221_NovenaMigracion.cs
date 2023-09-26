@@ -5,7 +5,7 @@
 namespace Persistence.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class sextaMigracion : Migration
+    public partial class NovenaMigracion : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
