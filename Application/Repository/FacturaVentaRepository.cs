@@ -24,7 +24,7 @@ public class FacturaVentaRepository : GenericRepository<FacturaVenta>, IFacturaV
     public async Task<string> TotalVentas()
     {
         var facturasVentas = await _context.FacturaVentas.ToListAsync();
-        decimal totalVentasConIVA = facturasVentas.Sum(fv => (decimal)fv.ValorTotalMasIva);
+        decimal totalVentasConIVA = facturasVentas.Sum(fv => (decimal)fv.ValorTotal * (decimal)1.19);
         totalVentasConIVA = Math.Round(totalVentasConIVA, 3);
 
         return $"El total recaudado por las ventas es: $ {totalVentasConIVA}";
@@ -92,7 +92,39 @@ public class FacturaVentaRepository : GenericRepository<FacturaVenta>, IFacturaV
         return medicamentos;
     }
 
+    public async Task<IEnumerable<Medicamento>> MedicamentosNoVendidosAsync()
+    {
+        var medicamentosVendidos = await _context.MedicamentosVentas
+            .Select(mv => mv.IdMedicamentoFK)
+            .ToListAsync();
 
+        var medicamentosNoVendidos = await _context.Medicamentos
+            .Where(m => !medicamentosVendidos.Contains(m.Id))
+            .ToListAsync();
+
+        return medicamentosNoVendidos;
+    }
+    public async Task<double> PromedioMedicamentosCompradosPorVentaAsync()
+    {
+        var promedio = await _context.FacturaCompras
+            .Where(fc => fc.FechaCompra.Year == 2023)
+            .Select(fc => fc.MedicamentosComprados.Count)
+            .DefaultIfEmpty(0)
+            .AverageAsync();
+
+        return promedio;
+    }
+    
+    public async Task<IEnumerable<Receta>> RecetasEmitidas2023Async()
+    {
+        var fechaLimite = new DateTime(2023, 1, 1);
+
+        var recetas = await _context.Recetas
+            .Where(r => r.FacturaVenta.FechaVenta > fechaLimite)
+            .ToListAsync();
+
+        return recetas;
+    }
 
 }
 

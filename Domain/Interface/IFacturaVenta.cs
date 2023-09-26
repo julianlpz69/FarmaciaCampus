@@ -16,5 +16,8 @@ public interface IFacturaVenta : IGenericRepository<FacturaVenta>
     public Task<int> TotalVentasPorMesEn2023Async(int numeroMes);
     public Task<IEnumerable<Medicamento>> MedicamentosVendidosCadaMesEn2023Async();
     public Task<int> VentasPrimerTrimestre2023Async();
+    public  Task<IEnumerable<Medicamento>> MedicamentosNoVendidosAsync();
+    public  Task<double> PromedioMedicamentosCompradosPorVentaAsync();
+    public  Task<IEnumerable<Receta>> RecetasEmitidas2023Async();
 
 }

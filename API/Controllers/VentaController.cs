@@ -168,5 +168,14 @@ namespace API.Controllers
             return TotalVentas;
         }
 
+        [HttpGet("Medicamento/no-vendidos")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IEnumerable<MedicamentoDto>>> medicamentosNoVendidos()
+        {
+            var medicamentos = await _unitOfWork.FacturaVentas.MedicamentosNoVendidosAsync();
+            return mapper.Map<List<MedicamentoDto>>(medicamentos);
+        }
+
     }
 }
