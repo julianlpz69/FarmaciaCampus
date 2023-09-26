@@ -49,4 +49,27 @@ public class EmpleadoRepository : GenericRepository<Empleado>, IEmpleado
 
         return empleadosSinVentas;
     }
+    public async Task<Empleado> EmpleadoConMasMedicamentosDistintosVendidosEn2023Async()
+    {
+        var ventas = await _context.FacturaVentas
+            .Where(f => f.FechaVenta.Year == 2023)
+            .Include(f => f.Empleado)
+            .Include(f => f.MedicamentosVendidos)
+            .ThenInclude(mv => mv.Medicamento)
+            .ToListAsync();
+
+        var empleado = ventas
+            .SelectMany(f => f.MedicamentosVendidos.Select(mv => new { f.Empleado, mv.Medicamento }))
+            .GroupBy(x => x.Empleado)
+            .Select(g => new { Empleado = g.Key, CantidadMedicamentosDistintos = g.Select(x => x.Medicamento).Distinct().Count() })
+            .OrderByDescending(x => x.CantidadMedicamentosDistintos)
+            .FirstOrDefault();
+
+        return empleado?.Empleado;
+    }
+
+
+
+
+
 }

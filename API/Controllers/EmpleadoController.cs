@@ -144,5 +144,13 @@ namespace API.Controllers
 
             return mapper.Map<List<EmpleadoDto>>(empleados);
         }
+
+        [HttpGet("Ventas/2023/Mas-medicamentos-distintos")]
+        public async Task<ActionResult<EmpleadoMedicamentosDistintosDto>> empleadoMasMeddistintos()
+        {
+            var empleado = await _unitOfWork.Empleados.EmpleadoConMasMedicamentosDistintosVendidosEn2023Async();
+
+            return mapper.Map<EmpleadoMedicamentosDistintosDto>(empleado);
+        }
     }
 }

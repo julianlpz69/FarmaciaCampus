@@ -7,6 +7,13 @@ namespace API.Profiles
     public class MappingProfiles : Profile
     {
         public MappingProfiles(){
+            CreateMap<Empleado, EmpleadoMedicamentosDistintosDto>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombre))
+            .ForMember(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellido))
+            .ForMember(dest => dest.Cedula, opt => opt.MapFrom(src => src.Cedula))
+            .ForMember(dest => dest.CantidadMedicamentosDistintosVendidos, opt => opt.Ignore());
+
             CreateMap<Cliente,ClienteDto>().ReverseMap();
             CreateMap<Medicamento,MedicamentoDto>().ReverseMap();
             CreateMap<FacturaVenta,FacturaVentaDto>().ReverseMap();
@@ -73,7 +80,7 @@ namespace API.Profiles
          .ForMember(dest => dest.CantidadGastada, opt => opt.Ignore());
         }
            
-           
+        
 
         
 
