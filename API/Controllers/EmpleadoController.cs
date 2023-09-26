@@ -149,8 +149,9 @@ namespace API.Controllers
         public async Task<ActionResult<EmpleadoMedicamentosDistintosDto>> empleadoMasMeddistintos()
         {
             var empleado = await _unitOfWork.Empleados.EmpleadoConMasMedicamentosDistintosVendidosEn2023Async();
-
-            return mapper.Map<EmpleadoMedicamentosDistintosDto>(empleado);
+            var empleadoDto = mapper.Map<EmpleadoMedicamentosDistintosDto>(empleado);
+            empleadoDto.CantidadMedicamentosDistintosVendidos = await _unitOfWork.Empleados.cantidadMedicamentosDistintosVendidos2023Async();
+            return empleadoDto;
         }
     }
 }

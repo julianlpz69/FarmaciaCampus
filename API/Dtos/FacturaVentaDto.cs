@@ -6,6 +6,7 @@ namespace API.Dtos
         public int IdEmpleadoFK { get; set; }
         public int IdClienteFK { get; set; }
         public List<MedicamentoVentaDto> MedicamentosVendidos { get; set; }
+        public List<RecetaDto> Recetas { get; set; }
         public Double ValorTotal { get; set;}
         public double ValorTotalMasIva { get; set; }
         public DateTime FechaVenta { get; set; }
