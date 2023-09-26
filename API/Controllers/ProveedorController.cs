@@ -22,11 +22,11 @@ public class ProveedorController : BaseApiController
         var datos = await  _unitOfWork.Proveedores.GetAllAsync();
         return _mapper.Map<List<AllProveedorDto>>(datos);
     }
-    [HttpGet("{name}")]
+    [HttpGet("Nombre")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<ProveedorMedicamentoWithName>>> Get(string name){
-        var datos = await _unitOfWork.Proveedores.GetListWithName(name);
+    public async Task<ActionResult<IEnumerable<ProveedorMedicamentoWithName>>> Get([FromQuery(Name = "m")]string name){
+        var datos = await _unitOfWork.Proveedores.GetListWithName(name.ToLower());
         return _mapper.Map<List<ProveedorMedicamentoWithName>>(datos);
     }
     
@@ -66,8 +66,9 @@ public class ProveedorController : BaseApiController
     [HttpGet("provmorethan5")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<Proveedor>>> GetProvMorethan5Med(){
+    public async Task<ActionResult<IEnumerable<ProveedorWithMoreThan5med>>> GetProvMorethan5Med(){
         var datos = await _unitOfWork.Proveedores.GetProveedoresCon5MedicamentosVendidos();
-        return Ok(datos);
+        return _mapper.Map<List<ProveedorWithMoreThan5med>>(datos);
     }
+    
 }

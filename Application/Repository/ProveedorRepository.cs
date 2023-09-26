@@ -41,19 +41,25 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
         return datos;
     }
     public async Task<IEnumerable<Proveedor>> GetOnlyWithMedLessThan50(){
-        return await _context.Set<Proveedor>()
-        .Include(e => e.Medicamentos.Where(e => e.Stock < 50))
+        var datos = await _context.Set<Proveedor>()
+        .Include(e => e.Medicamentos)
         .ToListAsync();
+        return datos.Where(e => e.Medicamentos.Where(e => e.Stock < 50).Any()).ToList();
     }
 public async Task<IEnumerable<Proveedor>> GetProveedoresCon5MedicamentosVendidos(){
         var data = await _context.Set<Proveedor>()
         .Include(e => e.FacturaCompras)
-        .ThenInclude(e => e.MedicamentosComprados)
-        .ThenInclude(e => e.Medicamento)
+        .Include(e => e.Medicamentos)
+        .ThenInclude(e => e.MedicamentosCompras)
         .ToListAsync();
-        return data.Where(e => e.Medicamentos
-                .Select(f => f.NombreMedicamento.ToLower())
-                .ToHashSet<string>().Count > 5)
-            .ToList() ?? data; 
+        return data
+        .Where(e => e.Medicamentos
+            .Where(e => e.MedicamentosCompras.Any())
+            .ToList().Count > 4)
+        .Where(e => e.FacturaCompras
+            .Where(e => e.FechaCompra> new DateTime(2023,1,1) && e.FechaCompra < new DateTime(2023,12,31)).Any()).ToList();
     }
+public async Task<IEnumerable<Proveedor>> GetProveedorsConMasMedicamentosVendidos(){
+    return await _context.Set<Proveedor>().ToListAsync();
+}
 }
