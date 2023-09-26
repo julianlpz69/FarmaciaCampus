@@ -70,5 +70,37 @@ public class ProveedorController : BaseApiController
         var datos = await _unitOfWork.Proveedores.GetProveedoresCon5MedicamentosVendidos();
         return _mapper.Map<List<ProveedorWithMoreThan5med>>(datos);
     }
-    
+    [HttpGet("ProvMasVendio")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ProveedorMasVendioDto>>> GetMasVendido(){
+        var datos = await _unitOfWork.Proveedores.GetProveedorsConMasMedicamentosVendidos();
+        return _mapper.Map<List<ProveedorMasVendioDto>>(datos);
+    }
+    [HttpPost("GuardarProveedor")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PostProveedorDto>> PostProveedor([FromBody] Proveedor proveedor){
+        _unitOfWork.Direcciones.Add(proveedor.Direccion);
+        await _unitOfWork.SaveAsync();
+        var entidad = _mapper.Map<PostProveedorDto>(proveedor);
+        if(proveedor == null){
+            return BadRequest();
+        }
+        _unitOfWork.Proveedores.Add(proveedor, await _unitOfWork.Direcciones.LastId());
+        await _unitOfWork.SaveAsync();
+        return entidad;
+    }
+    [HttpDelete("Eliminar/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Proveedor>> EliminarProveedor(int id){
+        var data = await _unitOfWork.Proveedores.GetById(id);
+        if(data == null){
+            return BadRequest();
+        }
+        _unitOfWork.Proveedores.Remove(data);
+        await _unitOfWork.SaveAsync();
+        return NoContent();
+    }
 }

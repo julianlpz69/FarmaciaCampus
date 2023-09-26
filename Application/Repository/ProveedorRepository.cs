@@ -14,28 +14,35 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
     {
         _context = context;
     }
+    // Obtener todos los datos de los proveedores
     public override async Task<IEnumerable<Proveedor>> GetAllAsync()
     {
         return await _context.Set<Proveedor>()
         .Include(e => e.Direccion)
         .ToListAsync();
     }
+    public async void Add(Proveedor entity, int IdDireccionFK)
+    {
+        entity.IdDireccionFK = IdDireccionFK;
+        base.Add(entity);
+    }
+    // obtener los datos de los proveedores excluyendo la factura
     public async Task<IEnumerable<Proveedor>> GetPerProvSinFactura(){
         return await  _context.Set<Proveedor>()
         .Include(e => e.Medicamentos)
         .ThenInclude(e => e.MedicamentosCompras)
         .ToListAsync();
     }
+    // Obtener Ganancias totales por proveedor
     public async Task<IEnumerable<Proveedor>> GetMedFrom2023(){
         return await  _context.Set<Proveedor>()
         .Include(e => e.FacturaCompras)
         .ToListAsync();
     }
+    // total de medicamentos por cada proveedor
     public async Task<IEnumerable<Proveedor>> GetListWithName(string name){
         var datos = await  _context.Set<Proveedor>()
-        .Include(e => e.FacturaCompras)
-        .ThenInclude(e => e.MedicamentosComprados)
-        .ThenInclude(e => e.Medicamento)
+        .Include(e => e.Medicamentos)
         .Where(e => e.NombreProveedor == name)
         .ToListAsync();
         return datos;
@@ -46,7 +53,7 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
         .ToListAsync();
         return datos.Where(e => e.Medicamentos.Where(e => e.Stock < 50).Any()).ToList();
     }
-public async Task<IEnumerable<Proveedor>> GetProveedoresCon5MedicamentosVendidos(){
+    public async Task<IEnumerable<Proveedor>> GetProveedoresCon5MedicamentosVendidos(){
         var data = await _context.Set<Proveedor>()
         .Include(e => e.FacturaCompras)
         .Include(e => e.Medicamentos)
@@ -59,7 +66,12 @@ public async Task<IEnumerable<Proveedor>> GetProveedoresCon5MedicamentosVendidos
         .Where(e => e.FacturaCompras
             .Where(e => e.FechaCompra> new DateTime(2023,1,1) && e.FechaCompra < new DateTime(2023,12,31)).Any()).ToList();
     }
-public async Task<IEnumerable<Proveedor>> GetProveedorsConMasMedicamentosVendidos(){
-    return await _context.Set<Proveedor>().ToListAsync();
-}
+    public async Task<IEnumerable<Proveedor>> GetProveedorsConMasMedicamentosVendidos(){
+        var datos = await _context.Set<Proveedor>()
+        .Include(e => e.Medicamentos)
+        .ThenInclude(e => e.MedicamentosCompras)
+        .ToListAsync();
+        return datos.OrderByDescending(e => e.Medicamentos
+        .Select(e => e.MedicamentosCompras.Select(e => e.CantidadComprada).Sum()).Sum()).ToList();
+    }
 }

@@ -26,7 +26,8 @@ namespace API.Profiles
            .ForMember(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellido))
            .ForMember(dest => dest.CantidadVentas, opt => opt.Ignore());
             CreateMap<Direccion, DireccionDto>().ReverseMap();
-
+            // Guardar Proveedor 
+            CreateMap<Proveedor, PostProveedorDto>().ReverseMap();
             // Lista de Proveedores
 
             CreateMap<Proveedor, AllProveedorDto>()
@@ -80,6 +81,10 @@ namespace API.Profiles
          .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombre))
          .ForMember(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellido))
          .ForMember(dest => dest.CantidadGastada, opt => opt.Ignore());
+
+         CreateMap<Proveedor, ProveedorMasVendioDto>()
+         .ForMember(e => e.CantidadVendida, opt => opt.MapFrom(e => e.Medicamentos.Select(x => x.MedicamentosCompras.Select(y => y.CantidadComprada).Sum()).Sum()))
+         .ReverseMap();
         }
            
         
