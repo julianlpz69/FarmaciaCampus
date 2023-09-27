@@ -22,7 +22,8 @@ public class DireccionConfiguration : IEntityTypeConfiguration<Direccion>
 
         builder.HasOne(e => e.Ciudad)
         .WithMany(e => e.Direcciones)
-        .HasForeignKey(e => e.IdCiudadFk);
+        .HasForeignKey(e => e.IdCiudadFk)
+        .OnDelete(DeleteBehavior.Cascade);
 
         
     }
