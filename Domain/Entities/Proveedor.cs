@@ -8,6 +8,7 @@ namespace Domain.Entities
     public class Proveedor : BaseEntity
     {
         public string NombreProveedor { get; set; }
+        public string NITProveedor {get; set;}
         public string ContactoProveedor { get; set; }
         public int IdDireccionFK { get; set; }
         public Direccion Direccion { get; set; }

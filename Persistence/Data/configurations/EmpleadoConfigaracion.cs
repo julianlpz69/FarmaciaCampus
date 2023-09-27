@@ -34,6 +34,8 @@ namespace Persistence.Data.configurations
             builder.HasOne(p => p.CargoEmpleado)
                 .WithMany(p => p.Empleados)
                 .HasForeignKey(p => p.IdCargoEmpleadoFK);
+
+            
     
         }
     }
