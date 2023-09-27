@@ -5,6 +5,7 @@ using Domain.Entities;
 using Domain.Interface;
 using Microsoft.AspNetCore.Mvc;
 using API.Dtos;
+using Microsoft.AspNetCore.Authorization;
 namespace API.Controllers;
 
 public class ProveedorController : BaseApiController
@@ -16,6 +17,7 @@ public class ProveedorController : BaseApiController
         _mapper = mapper;
     }
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<AllProveedorDto>>> GetAllProveedor(){
@@ -23,6 +25,7 @@ public class ProveedorController : BaseApiController
         return _mapper.Map<List<AllProveedorDto>>(datos);
     }
     [HttpGet("Nombre")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProveedorMedicamentoWithName>>> Get([FromQuery(Name = "m")]string name){
@@ -31,6 +34,7 @@ public class ProveedorController : BaseApiController
     }
     
     [HttpGet("TotalPerProv")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProveedorListVendidosDto>>> Get1(){
@@ -38,6 +42,7 @@ public class ProveedorController : BaseApiController
         return _mapper.Map<List<ProveedorListVendidosDto>>(datos);
     }
     [HttpGet("TotalAnualPerProv")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProveedorVentasAnualesDto>>> Get(){
@@ -57,6 +62,7 @@ public class ProveedorController : BaseApiController
         return Ok(dto);
     }
     [HttpGet("provlessthan50med")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProveedorMedWithLess50Dto>>> GetLess50Stock(){
@@ -64,6 +70,7 @@ public class ProveedorController : BaseApiController
         return _mapper.Map<List<ProveedorMedWithLess50Dto>>(datos);
     }
     [HttpGet("provmorethan5")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProveedorWithMoreThan5med>>> GetProvMorethan5Med(){
@@ -71,6 +78,7 @@ public class ProveedorController : BaseApiController
         return _mapper.Map<List<ProveedorWithMoreThan5med>>(datos);
     }
     [HttpGet("ProvMasVendio")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProveedorMasVendioDto>>> GetMasVendido(){
@@ -78,6 +86,7 @@ public class ProveedorController : BaseApiController
         return _mapper.Map<List<ProveedorMasVendioDto>>(datos);
     }
     [HttpPost("GuardarProveedor")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PostProveedorDto>> PostProveedor([FromBody] Proveedor proveedor){
@@ -92,6 +101,7 @@ public class ProveedorController : BaseApiController
         return entidad;
     }
     [HttpDelete("Eliminar/{id}")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Proveedor>> EliminarProveedor(int id){
@@ -100,6 +110,28 @@ public class ProveedorController : BaseApiController
             return BadRequest();
         }
         _unitOfWork.Proveedores.Remove(data);
+        await _unitOfWork.SaveAsync();
+        return NoContent();
+    }
+    [HttpGet("Find/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AllProveedorDto>> FindProvedor(int id){
+        if(id < 1){
+            return BadRequest();
+        }
+        var datos = await _unitOfWork.Proveedores.GetById(id);
+        return _mapper.Map<AllProveedorDto>(datos);
+    }
+    [HttpPut("Update/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AllProveedorDto>> UpdateProveedor([FromBody] Proveedor proveedor, int Id){
+        var dato = await _unitOfWork.Proveedores.GetById(Id);
+        if(dato == null){
+            return BadRequest();
+        }
+        _unitOfWork.Proveedores.Update(dato, proveedor);
         await _unitOfWork.SaveAsync();
         return NoContent();
     }

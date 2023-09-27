@@ -21,7 +21,7 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
         .Include(e => e.Direccion)
         .ToListAsync();
     }
-    public async void Add(Proveedor entity, int IdDireccionFK)
+    public void Add(Proveedor entity, int IdDireccionFK)
     {
         entity.IdDireccionFK = IdDireccionFK;
         base.Add(entity);
@@ -73,5 +73,17 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
         .ToListAsync();
         return datos.OrderByDescending(e => e.Medicamentos
         .Select(e => e.MedicamentosCompras.Select(e => e.CantidadComprada).Sum()).Sum()).ToList();
+    }
+    public override async Task<Proveedor> GetById(int id)
+    {
+        var dato = await _context.Set<Proveedor>().Include(e => e.Direccion).ToListAsync();
+        return dato.Find(e => e.Id == id);
+    }
+    public void Update(Proveedor old, Proveedor nuevo)
+    {
+        old.NombreProveedor = nuevo.NombreProveedor;
+        old.ContactoProveedor = nuevo.ContactoProveedor;
+        old.IdDireccionFK = nuevo.IdDireccionFK;
+        
     }
 }

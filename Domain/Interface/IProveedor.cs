@@ -15,4 +15,5 @@ namespace Domain.Interface;
         Task<IEnumerable<Proveedor>> GetOnlyWithMedLessThan50();
         Task<IEnumerable<Proveedor>> GetProveedoresCon5MedicamentosVendidos();
         Task<IEnumerable<Proveedor>> GetProveedorsConMasMedicamentosVendidos();
+        void Update(Proveedor old, Proveedor nuevo);
     }

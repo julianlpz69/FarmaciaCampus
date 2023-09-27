@@ -31,12 +31,7 @@ namespace API.Profiles
             // Lista de Proveedores
 
             CreateMap<Proveedor, AllProveedorDto>()
-            .ForMember(dest => dest.NombreProveedor, opt => opt.MapFrom(src => src.NombreProveedor))
-            .ForMember(dest => dest.ContactoProveedor, opt => opt.MapFrom(src => src.ContactoProveedor))
-            .ForMember(dest => dest.Direccion, opt => opt.MapFrom(src => src.Direccion))
-            .ForPath(dest => dest.Direccion.Numero, opt => opt.MapFrom(e => e.Direccion.Numero))
-            .ForPath(dest => dest.Direccion.Carrera, opt => opt.MapFrom(e => e.Direccion.Carrera))
-            .ForPath(dest => dest.Direccion.Calle, opt => opt.MapFrom(e => e.Direccion.Calle))
+            
             .ReverseMap();
 
             // Medicamentos Vendidos por proveedor
