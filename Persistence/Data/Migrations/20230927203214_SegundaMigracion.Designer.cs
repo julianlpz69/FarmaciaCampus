@@ -11,7 +11,7 @@ using Persistence.Data;
 namespace Persistence.Data.Migrations
 {
     [DbContext(typeof(FarmaciaDBContext))]
-    [Migration("20230927011634_SegundaMigracion")]
+    [Migration("20230927203214_SegundaMigracion")]
     partial class SegundaMigracion
     {
         /// <inheritdoc />
@@ -36,6 +36,28 @@ namespace Persistence.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("cargoEmpleado", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NombreCargo = "Gerente"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            NombreCargo = "Enfermero"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            NombreCargo = "Cajero"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            NombreCargo = "Auxiliar"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Ciudad", b =>
@@ -57,6 +79,128 @@ namespace Persistence.Data.Migrations
                     b.HasIndex("IdDepartamentoFk");
 
                     b.ToTable("ciudad", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IdDepartamentoFk = 1,
+                            Nombre = "Buenos Aires 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IdDepartamentoFk = 1,
+                            Nombre = "Buenos Aires 2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IdDepartamentoFk = 2,
+                            Nombre = "Córdoba 1"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IdDepartamentoFk = 2,
+                            Nombre = "Córdoba 2"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IdDepartamentoFk = 3,
+                            Nombre = "Río de Janeiro 1"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IdDepartamentoFk = 3,
+                            Nombre = "Río de Janeiro 2"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IdDepartamentoFk = 4,
+                            Nombre = "São Paulo 1"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IdDepartamentoFk = 4,
+                            Nombre = "São Paulo 2"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            IdDepartamentoFk = 5,
+                            Nombre = "Estado de México 1"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IdDepartamentoFk = 5,
+                            Nombre = "Estado de México 2"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            IdDepartamentoFk = 6,
+                            Nombre = "Jalisco 1"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            IdDepartamentoFk = 6,
+                            Nombre = "Jalisco 2"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            IdDepartamentoFk = 7,
+                            Nombre = "Madrid 1"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            IdDepartamentoFk = 7,
+                            Nombre = "Madrid 2"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            IdDepartamentoFk = 8,
+                            Nombre = "Barcelona 1"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            IdDepartamentoFk = 8,
+                            Nombre = "Barcelona 2"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            IdDepartamentoFk = 9,
+                            Nombre = "Nueva York 1"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            IdDepartamentoFk = 9,
+                            Nombre = "Nueva York 2"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            IdDepartamentoFk = 10,
+                            Nombre = "Chicago 1"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            IdDepartamentoFk = 10,
+                            Nombre = "Chicago 2"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Cliente", b =>
@@ -78,6 +222,9 @@ namespace Persistence.Data.Migrations
                     b.Property<int>("IdDireccionFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdTipoDocumentoFK")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -86,9 +233,14 @@ namespace Persistence.Data.Migrations
                     b.Property<string>("Telefono")
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("TipoDocumentoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdDireccionFk");
+
+                    b.HasIndex("TipoDocumentoId");
 
                     b.ToTable("cliente", (string)null);
                 });
@@ -112,6 +264,68 @@ namespace Persistence.Data.Migrations
                     b.HasIndex("IdPaisFk");
 
                     b.ToTable("departamento", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IdPaisFk = 1,
+                            Nombre = "Buenos Aires"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IdPaisFk = 1,
+                            Nombre = "Córdoba"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IdPaisFk = 2,
+                            Nombre = "Río de Janeiro"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IdPaisFk = 2,
+                            Nombre = "São Paulo"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IdPaisFk = 3,
+                            Nombre = "Departamento de México"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IdPaisFk = 3,
+                            Nombre = "Monterrey"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IdPaisFk = 4,
+                            Nombre = "Madrid"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IdPaisFk = 4,
+                            Nombre = "Barcelona"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            IdPaisFk = 5,
+                            Nombre = "Nueva York"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IdPaisFk = 5,
+                            Nombre = "Chicago"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Direccion", b =>
@@ -171,6 +385,9 @@ namespace Persistence.Data.Migrations
                     b.Property<int>("IdDireccionFk")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdTipoDocumentoFK")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -179,11 +396,16 @@ namespace Persistence.Data.Migrations
                     b.Property<string>("Telefono")
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("TipoDocumentoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdCargoEmpleadoFK");
 
                     b.HasIndex("IdDireccionFk");
+
+                    b.HasIndex("TipoDocumentoId");
 
                     b.ToTable("Empleado", (string)null);
                 });
@@ -387,6 +609,33 @@ namespace Persistence.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("pais", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Argentina"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Brasil"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nombre = "México"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Nombre = "España"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Nombre = "Estados Unidos"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Proveedor", b =>
@@ -402,6 +651,9 @@ namespace Persistence.Data.Migrations
 
                     b.Property<int>("IdDireccionFK")
                         .HasColumnType("int");
+
+                    b.Property<string>("NITProveedor")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("NombreProveedor")
                         .IsRequired()
@@ -498,6 +750,48 @@ namespace Persistence.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Entities.TipoDocumento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("NombreTipoDocumento")
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tipo_documento", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NombreTipoDocumento = "Cedula Ciudadania"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            NombreTipoDocumento = "Tarjeta Identidad"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            NombreTipoDocumento = "Pasaporte"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            NombreTipoDocumento = "Cedula Extranjeria"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            NombreTipoDocumento = "PPT"
+                        });
+                });
+
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -525,6 +819,15 @@ namespace Persistence.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("user", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            UserEmail = "julianjoselpz2019@gmail.com",
+                            UserName = "Julian",
+                            UserPassword = "AQAAAAIAAYagAAAAEKy7eDL9kR5DnZeJjwgco1cVJjlU0ExskyNJoN8vHBvzMrhlYNKQ1F+ff2M/FTiE7A=="
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.UserRol", b =>
@@ -539,7 +842,14 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex("IdRol");
 
-                    b.ToTable("userRol", (string)null);
+                    b.ToTable("UserRol", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdUser = 1,
+                            IdRol = 2
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Ciudad", b =>
@@ -561,7 +871,13 @@ namespace Persistence.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.TipoDocumento", "TipoDocumento")
+                        .WithMany("Clientes")
+                        .HasForeignKey("TipoDocumentoId");
+
                     b.Navigation("Direccion");
+
+                    b.Navigation("TipoDocumento");
                 });
 
             modelBuilder.Entity("Domain.Entities.Departamento", b =>
@@ -600,9 +916,15 @@ namespace Persistence.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.TipoDocumento", "TipoDocumento")
+                        .WithMany("Empleados")
+                        .HasForeignKey("TipoDocumentoId");
+
                     b.Navigation("CargoEmpleado");
 
                     b.Navigation("Direccion");
+
+                    b.Navigation("TipoDocumento");
                 });
 
             modelBuilder.Entity("Domain.Entities.FacturaCompra", b =>
@@ -840,6 +1162,13 @@ namespace Persistence.Data.Migrations
             modelBuilder.Entity("Domain.Entities.Rol", b =>
                 {
                     b.Navigation("UsersRols");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TipoDocumento", b =>
+                {
+                    b.Navigation("Clientes");
+
+                    b.Navigation("Empleados");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

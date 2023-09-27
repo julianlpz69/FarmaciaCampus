@@ -34,10 +34,11 @@ namespace Persistence.Data
         public DbSet<User> Users {get; set;}  
         public DbSet<Rol> Rols {get; set;}  
         public DbSet<UserRol> UserRols {get; set;}  
+        public DbSet<TipoDocumento> TipoDocumentos {get; set;}  
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
-} 
+}   

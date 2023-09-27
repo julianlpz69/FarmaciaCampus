@@ -27,4 +27,4 @@ namespace Persistence.Data.configurations
             .HasForeignKey(p => p.IdFacturaVentaFK);
         }
     }
-}
+}  
