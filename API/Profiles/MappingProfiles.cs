@@ -29,16 +29,12 @@ namespace API.Profiles
            .ForMember(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellido))
            .ForMember(dest => dest.CantidadVentas, opt => opt.Ignore());
             CreateMap<Direccion, DireccionDto>().ReverseMap();
-
+            // Guardar Proveedor 
+            CreateMap<Proveedor, PostProveedorDto>().ReverseMap();
             // Lista de Proveedores
 
             CreateMap<Proveedor, AllProveedorDto>()
-            .ForMember(dest => dest.NombreProveedor, opt => opt.MapFrom(src => src.NombreProveedor))
-            .ForMember(dest => dest.ContactoProveedor, opt => opt.MapFrom(src => src.ContactoProveedor))
-            .ForMember(dest => dest.Direccion, opt => opt.MapFrom(src => src.Direccion))
-            .ForPath(dest => dest.Direccion.Numero, opt => opt.MapFrom(e => e.Direccion.Numero))
-            .ForPath(dest => dest.Direccion.Carrera, opt => opt.MapFrom(e => e.Direccion.Carrera))
-            .ForPath(dest => dest.Direccion.Calle, opt => opt.MapFrom(e => e.Direccion.Calle))
+            
             .ReverseMap();
 
             // Medicamentos Vendidos por proveedor
@@ -61,7 +57,9 @@ namespace API.Profiles
                 NombreProducto = e.NombreMedicamento 
                 })))
             .ReverseMap();
-
+            // proveedore que han vendido almenos 5 medicamentos diferentes el año 2023 
+            CreateMap<Proveedor, ProveedorWithMoreThan5med>()
+            .ForMember(dest => dest.MedicamentoDtos, opt => opt.MapFrom(e =>e.Medicamentos.Where(e => e.MedicamentosCompras.Count > 0)));
             // Proveedores con medicamentos con menos de 50 elementos en stock
             CreateMap<Proveedor, ProveedorMedWithLess50Dto>()
             .ForMember(dest => dest.Medicamento, opt => opt.MapFrom(e => e.Medicamentos.Select(e => new MedicamentoDto{
@@ -81,6 +79,10 @@ namespace API.Profiles
          .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombre))
          .ForMember(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellido))
          .ForMember(dest => dest.CantidadGastada, opt => opt.Ignore());
+
+         CreateMap<Proveedor, ProveedorMasVendioDto>()
+         .ForMember(e => e.CantidadVendida, opt => opt.MapFrom(e => e.Medicamentos.Select(x => x.MedicamentosCompras.Select(y => y.CantidadComprada).Sum()).Sum()))
+         .ReverseMap();
         }
            
         

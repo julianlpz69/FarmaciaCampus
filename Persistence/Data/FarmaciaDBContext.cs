@@ -40,4 +40,4 @@ namespace Persistence.Data
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
-}
+} 
