@@ -11,8 +11,8 @@ using Persistence.Data;
 namespace Persistence.Data.Migrations
 {
     [DbContext(typeof(FarmaciaDBContext))]
-    [Migration("20230926160221_NovenaMigracion")]
-    partial class NovenaMigracion
+    [Migration("20230927011634_SegundaMigracion")]
+    partial class SegundaMigracion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -484,6 +484,18 @@ namespace Persistence.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("rol", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NombreRol = "Empleado"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            NombreRol = "Administrador"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

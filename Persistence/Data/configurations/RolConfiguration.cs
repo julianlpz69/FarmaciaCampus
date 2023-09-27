@@ -22,5 +22,11 @@ namespace Persistence.Data.configurations;
         .HasMaxLength(50)
         .IsRequired();
 
+
+        builder.HasData(
+            new Rol { Id = 1, NombreRol = "Empleado"},
+            new Rol { Id = 2, NombreRol = "Administrador"}
+        );
     }
 }
+   
