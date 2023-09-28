@@ -4,8 +4,8 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
-namespace Application.Repository
-{
+namespace Application.Repository;
+
     public class PaisRepository : GenericRepository<Pais>, IPais
     {
      private readonly FarmaciaDBContext _context;
@@ -15,9 +15,12 @@ namespace Application.Repository
         }
 
    public override async Task<IEnumerable<Pais>> GetAllAsync()
-{
- return await _context.Paises.Include(p => p.Departamentos).ThenInclude(d => d.Ciudades).ToListAsync();
-}
-      
+    {
+        return await _context.Paises.Include(p => p.Departamentos).ThenInclude(d => d.Ciudades).ToListAsync();
     }
-}
+    public override async Task<Pais> GetById(int id)
+    {
+        var datos = await _context.Set<Pais>().Include(e => e.Departamentos).ToListAsync();
+        return datos.Where(e => e.Id == id).FirstOrDefault();
+    }
+    }

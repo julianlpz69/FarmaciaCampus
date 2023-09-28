@@ -52,10 +52,10 @@ public class DepartamentoController : BaseApiController
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<DepartamentoDto>> Get(int id)
+    public async Task<ActionResult<DepartamentoXIdDto>> Get(int id)
     {
         var Departamento = await _unitOfWork.Departamentos.GetById(id);
-        return mapper.Map<DepartamentoDto>(Departamento);
+        return mapper.Map<DepartamentoXIdDto>(Departamento);
     }
 
     [HttpPut("{id}")]
