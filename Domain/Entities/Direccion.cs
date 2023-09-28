@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities;
 
+
 public class Direccion : BaseEntity
 {
     public int IdCiudadFk { get; set; }
