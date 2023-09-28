@@ -16,6 +16,20 @@ public class MedicamentoRepository : GenericRepository<Medicamento>, IMedicament
         _context = context;
     }
 
+
+
+    public override async Task<IEnumerable<Medicamento>> GetAllAsync()
+    {
+        return await _context.Medicamentos
+            .Include(p => p.Marca)
+            .Include(p => p.Proveedor)
+            .ToListAsync();
+    }
+    public override async Task<Medicamento> GetById(int id)
+    {
+        return await _context.Set<Medicamento>().Include(p => p.Marca).Include(p => p.Proveedor).FirstOrDefaultAsync(p => p.Id == id);
+    }
+
     public async Task<IEnumerable<Medicamento>> GetStock_50()
     {   
 

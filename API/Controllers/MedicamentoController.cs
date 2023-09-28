@@ -27,11 +27,10 @@ namespace API.Controllers
          [HttpGet]
          [ProducesResponseType(StatusCodes.Status200OK)]
          [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        
-         public async Task<ActionResult<IEnumerable<MedicamentoDto>>> Get()
+         public async Task<ActionResult<IEnumerable<MedicamentoGetDto>>> Get()
          {
             var Medicamentos = await _unitOfWork.Medicamentos.GetAllAsync();
-            return mapper.Map<List<MedicamentoDto>>(Medicamentos);
+            return mapper.Map<List<MedicamentoGetDto>>(Medicamentos);
 
          }
 
