@@ -19,10 +19,17 @@ namespace API.Extensions
     {
         public static void ConfigureCors(this IServiceCollection services) =>
             services.AddCors(options =>{
-            options.AddPolicy("CorsPolicy", builder =>
+            options.AddPolicy("CorsPolicy", builder =>{
                 builder.AllowAnyOrigin()
                         .AllowAnyMethod()
-                        .AllowAnyHeader());
+                        .AllowAnyHeader();
+
+                        
+                builder.WithOrigins("http://127.0.0.1:5500")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+            });
         });
         
     public static void ConfigureJson(this IServiceCollection services){

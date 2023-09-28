@@ -6,6 +6,7 @@ using API.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -21,7 +22,8 @@ namespace API.Controllers
             _unitOfWork = UnitOfWork;
             mapper = Mapper;
         }
-
+        
+         [Authorize]
          [HttpGet]
          [ProducesResponseType(StatusCodes.Status200OK)]
          [ProducesResponseType(StatusCodes.Status400BadRequest)]

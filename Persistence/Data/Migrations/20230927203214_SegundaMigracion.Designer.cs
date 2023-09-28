@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Data;
 
@@ -10,9 +11,11 @@ using Persistence.Data;
 namespace Persistence.Data.Migrations
 {
     [DbContext(typeof(FarmaciaDBContext))]
-    partial class FarmaciaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230927203214_SegundaMigracion")]
+    partial class SegundaMigracion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,11 +233,14 @@ namespace Persistence.Data.Migrations
                     b.Property<string>("Telefono")
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("TipoDocumentoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdDireccionFk");
 
-                    b.HasIndex("IdTipoDocumentoFK");
+                    b.HasIndex("TipoDocumentoId");
 
                     b.ToTable("cliente", (string)null);
                 });
@@ -355,38 +361,6 @@ namespace Persistence.Data.Migrations
                     b.HasIndex("IdCiudadFk");
 
                     b.ToTable("direccion", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Calle = "70",
-                            Carrera = "15",
-                            Complemento = "sopas",
-                            IdCiudadFk = 1,
-                            Numero = "12",
-                            TipoVia = "via"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Calle = "71",
-                            Carrera = "15",
-                            Complemento = "sopas",
-                            IdCiudadFk = 2,
-                            Numero = "12",
-                            TipoVia = "via"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Calle = "72",
-                            Carrera = "15",
-                            Complemento = "sopas",
-                            IdCiudadFk = 3,
-                            Numero = "12",
-                            TipoVia = "via"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Empleado", b =>
@@ -422,13 +396,16 @@ namespace Persistence.Data.Migrations
                     b.Property<string>("Telefono")
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("TipoDocumentoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdCargoEmpleadoFK");
 
                     b.HasIndex("IdDireccionFk");
 
-                    b.HasIndex("IdTipoDocumentoFK");
+                    b.HasIndex("TipoDocumentoId");
 
                     b.ToTable("Empleado", (string)null);
                 });
@@ -508,23 +485,6 @@ namespace Persistence.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("marca", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            NombreMarca = "Sesderma"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            NombreMarca = "Bayer"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            NombreMarca = "Pfizer "
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Medicamento", b =>
@@ -705,32 +665,6 @@ namespace Persistence.Data.Migrations
                     b.HasIndex("IdDireccionFK");
 
                     b.ToTable("proveedor", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ContactoProveedor = "31231",
-                            IdDireccionFK = 1,
-                            NITProveedor = "12324",
-                            NombreProveedor = "Sesderma"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ContactoProveedor = "31231",
-                            IdDireccionFK = 2,
-                            NITProveedor = "12324",
-                            NombreProveedor = "Bayer"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ContactoProveedor = "31231",
-                            IdDireccionFK = 3,
-                            NITProveedor = "12324",
-                            NombreProveedor = "Pfizer "
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Receta", b =>
@@ -939,9 +873,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasOne("Domain.Entities.TipoDocumento", "TipoDocumento")
                         .WithMany("Clientes")
-                        .HasForeignKey("IdTipoDocumentoFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TipoDocumentoId");
 
                     b.Navigation("Direccion");
 
@@ -986,9 +918,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasOne("Domain.Entities.TipoDocumento", "TipoDocumento")
                         .WithMany("Empleados")
-                        .HasForeignKey("IdTipoDocumentoFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TipoDocumentoId");
 
                     b.Navigation("CargoEmpleado");
 

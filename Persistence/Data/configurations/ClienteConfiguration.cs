@@ -30,6 +30,10 @@ namespace Persistence.Data.configurations
             builder.HasOne(p => p.Direccion)
                 .WithMany(p => p.Clientes)
                 .HasForeignKey(p => p.IdDireccionFk);
+
+                builder.HasOne(p => p.TipoDocumento)
+                .WithMany(p => p.Clientes)
+                .HasForeignKey(p => p.IdTipoDocumentoFK);
         }
     }
 }

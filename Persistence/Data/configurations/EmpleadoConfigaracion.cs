@@ -34,7 +34,11 @@ namespace Persistence.Data.configurations
             builder.HasOne(p => p.CargoEmpleado)
                 .WithMany(p => p.Empleados)
                 .HasForeignKey(p => p.IdCargoEmpleadoFK);
-    
+
+            
+            builder.HasOne(p => p.TipoDocumento)
+            .WithMany(p => p.Empleados)
+            .HasForeignKey(p => p.IdTipoDocumentoFK);
         }
     }
 }

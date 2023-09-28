@@ -14,5 +14,12 @@ public class CargoEmpleadoConfiguration : IEntityTypeConfiguration<CargoEmpleado
         builder.Property(e => e.NombreCargo)
         .IsRequired()
         .HasMaxLength(50);
+
+        builder.HasData(
+            new CargoEmpleado { Id = 1, NombreCargo = "Gerente"},
+            new CargoEmpleado { Id = 2, NombreCargo = "Enfermero"},
+            new CargoEmpleado { Id = 3, NombreCargo = "Cajero"},
+            new CargoEmpleado { Id = 4, NombreCargo = "Auxiliar"}
+        );
     }
 }

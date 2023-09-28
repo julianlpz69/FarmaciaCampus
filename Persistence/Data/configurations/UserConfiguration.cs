@@ -60,6 +60,10 @@ namespace Persistence.Data.configurations;
             builder.HasMany(p => p.RefreshTokens)
             .WithOne(p => p.User)
             .HasForeignKey(p => p.UserId);
+
+            builder.HasData(
+                new User { Id = 1, UserName = "Julian" , UserEmail="julianjoselpz2019@gmail.com", UserPassword = "AQAAAAIAAYagAAAAEKy7eDL9kR5DnZeJjwgco1cVJjlU0ExskyNJoN8vHBvzMrhlYNKQ1F+ff2M/FTiE7A=="}
+            );
         }
 
     }

@@ -25,6 +25,11 @@ public class DireccionConfiguration : IEntityTypeConfiguration<Direccion>
         .HasForeignKey(e => e.IdCiudadFk)
         .OnDelete(DeleteBehavior.Cascade);
 
-        
+        builder.HasData(
+            new Direccion {Id=1,IdCiudadFk=1,TipoVia="via", Calle="70", Carrera="15", Numero="12", Complemento="sopas"},
+            new Direccion {Id=2,IdCiudadFk=2,TipoVia="via", Calle="71", Carrera="15", Numero="12", Complemento="sopas"},
+            new Direccion {Id=3,IdCiudadFk=3,TipoVia="via", Calle="72", Carrera="15", Numero="12", Complemento="sopas"}
+        );
     }
 }
+ 

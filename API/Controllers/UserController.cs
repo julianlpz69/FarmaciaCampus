@@ -38,10 +38,11 @@ public class UserController : BaseApiController
     }
 
     [HttpPost("refresh-token")]
-    public async Task<IActionResult> RefreshToken()
+    public async Task<IActionResult> RefreshToken([FromBody]RefresTokenDto ss)
     {
-        var refreshToken = Request.Cookies["refreshToken"];
-        var response = await _userService.RefreshTokenAsync(refreshToken);
+        string RefrestToken = ss.refresToken;
+        Console.WriteLine(ss);
+        var response = await _userService.RefreshTokenAsync(RefrestToken);
         if (!string.IsNullOrEmpty(response.RefreshToken))
             SetRefreshTokenInCookie(response.RefreshToken);
         return Ok(response);
