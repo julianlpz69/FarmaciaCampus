@@ -28,6 +28,12 @@ namespace API.Profiles
            .ForMember(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellido))
            .ForMember(dest => dest.CantidadVentas, opt => opt.Ignore());
             CreateMap<Direccion, DireccionDto>().ReverseMap();
+            CreateMap<Pais, PaisDto>().ReverseMap();
+            CreateMap<Departamento, DepartamentoDto>().ReverseMap();
+            CreateMap<Ciudad, CiudadDto>().ReverseMap();
+            CreateMap<Pais, PaisXIdDto>().ReverseMap();
+            CreateMap<Departamento, DepartamentoXIdDto>().ReverseMap();
+
             // Guardar Proveedor 
             CreateMap<Proveedor, PostProveedorDto>().ReverseMap();
             // Lista de Proveedores
