@@ -17,6 +17,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private MedicamentoRepository _medicamento;
     private ProveedorRepository _proveedor;
     private MedicamentoVentaRepository _medicamentoVenta;
+    private PaisRepository _pais;
+    private DepartamentoRepository _departamento;
+    private CiudadRepository _ciudad;
     private readonly FarmaciaDBContext _context; 
 	private IRol _roles;
     private IUser _users;
@@ -137,6 +140,39 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
+    public IDepartamento Departamentos
+    {
+        get
+        {
+            if (_departamento == null)
+            {
+                _departamento = new(_context);
+            }
+            return _departamento;
+        }
+    }
+    public IPais Paises
+    {
+        get
+        {
+            if (_pais == null)
+            {
+                _pais = new(_context);
+            }
+            return _pais;
+        }
+    }
+    public ICiudad Ciudades
+    {
+        get
+        {
+            if (_ciudad == null)
+            {
+                _ciudad = new(_context);
+            }
+            return _ciudad;
+        }
+    }
 
     public void Dispose()
     {
