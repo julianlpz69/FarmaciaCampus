@@ -21,6 +21,7 @@ namespace API.Profiles
            .ForMember(dest => dest.Recetas, opt => opt.Ignore());
             CreateMap<MedicamentoVenta, MedicamentoVentaDto>().ReverseMap();
             CreateMap<Empleado, EmpleadoDto>().ReverseMap();
+            CreateMap<Empleado, EmpleadoCrearDto>().ReverseMap();
             CreateMap<Receta, RecetaDto>().ReverseMap();
             CreateMap<CargoEmpleado, CargoEmpleadoDto>().ReverseMap();
             CreateMap<Direccion, DireccionDto>().ReverseMap();

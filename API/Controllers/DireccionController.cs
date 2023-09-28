@@ -45,7 +45,7 @@ namespace API.Controllers
                 return BadRequest();
             }
             DireccionDto.Id = Direccion.Id;
-            return CreatedAtAction(nameof(Post), new { id = DireccionDto.Id }, Direccion);
+            return CreatedAtAction(nameof(Post), new { id = DireccionDto.Id }, mapper.Map<DireccionDto>(Direccion));
         }
 
 

@@ -22,6 +22,10 @@ public class EmpleadoRepository : GenericRepository<Empleado>, IEmpleado
             .Include(p => p.CargoEmpleado)
             .ToListAsync();
     }
+    public override async Task<Empleado> GetById(int id)
+    {
+        return await _context.Set<Empleado>().Include(p => p.Direccion).Include(p => p.CargoEmpleado).FirstOrDefaultAsync(p => p.Id == id);
+    }
     public async Task<IEnumerable<Empleado>> EmpleadosMas5Ventas()
     {
         var empleados = await _context.Empleados

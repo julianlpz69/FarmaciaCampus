@@ -43,34 +43,105 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Empleado>> Post(EmpleadoDto EmpleadoDto)
+        public async Task<ActionResult<EmpleadoDireccionDto>> Post(EmpleadoDireccionDto empleadoDireccionDto)
         {
-            var Empleado = this.mapper.Map<Empleado>(EmpleadoDto);
-            _unitOfWork.Empleados.Add(Empleado);
+            var direccion = new Direccion
+            {
+                TipoVia = empleadoDireccionDto.DireccionTipoVia,
+                Calle = empleadoDireccionDto.DireccionCalle,
+                Carrera = empleadoDireccionDto.DireccionCarrera,
+                Numero = empleadoDireccionDto.DireccionNumero,
+                IdCiudadFk = empleadoDireccionDto.DireccionIdCiudadFk,
+            };
+
+            _unitOfWork.Direcciones.Add(direccion);
             await _unitOfWork.SaveAsync();
 
-            if (Empleado == null)
+            var empleado = new Empleado
             {
-                return BadRequest();
-            }
-            EmpleadoDto.Id = Empleado.Id;
-            return CreatedAtAction(nameof(Post), new { id = EmpleadoDto.Id }, Empleado);
+                Nombre = empleadoDireccionDto.EmpleadoNombre,
+                Apellido = empleadoDireccionDto.EmpleadoApellido,
+                Cedula = empleadoDireccionDto.EmpleadoCedula,
+                Telefono = empleadoDireccionDto.EmpleadoTelefono,
+                IdDireccionFk = direccion.Id, 
+                IdCargoEmpleadoFK = empleadoDireccionDto.EmpleadoIdCargoEmpleadoFk,
+                IdTipoDocumentoFK = empleadoDireccionDto.EmpleadoIdTipoDocumentoFk,
+            };
+
+            _unitOfWork.Empleados.Add(empleado);
+            await _unitOfWork.SaveAsync();
+
+            empleadoDireccionDto.DireccionId = direccion.Id;
+            empleadoDireccionDto.EmpleadoId = empleado.Id;
+
+            return CreatedAtAction(nameof(Post), new { id = empleadoDireccionDto.EmpleadoId }, empleadoDireccionDto);
         }
+
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
-        public async Task<ActionResult<EmpleadoDto>> Put(int id, [FromBody] EmpleadoDto EmpleadoDto)
+        public async Task<ActionResult<EmpleadoCrearDto>> Put(int id, [FromBody] EmpleadoCrearDto empleadoDto)
         {
-            if (EmpleadoDto == null)
-                return NotFound();
+            if (empleadoDto == null || id != empleadoDto.Id)
+            {
+                return BadRequest();
+            }
 
-            var Empleado = this.mapper.Map<Empleado>(EmpleadoDto);
-            _unitOfWork.Empleados.Update(Empleado);
+            // Verificar si el empleado con el ID dado existe en la base de datos
+            var empleadoExistente = await _unitOfWork.Empleados.GetById(id);
+            if (empleadoExistente == null)
+            {
+                return NotFound();
+            }
+
+            // Actualizar los campos del empleado existente con los valores del DTO
+            empleadoExistente.Nombre = empleadoDto.Nombre;
+            empleadoExistente.Apellido = empleadoDto.Apellido;
+            empleadoExistente.Cedula = empleadoDto.Cedula;
+            empleadoExistente.Telefono = empleadoDto.Telefono;
+            empleadoExistente.IdCargoEmpleadoFK = empleadoDto.IdCargoEmpleadoFK;
+            empleadoExistente.IdTipoDocumentoFK = empleadoDto.IdTipoDocumentoFK;
+
+            // Actualizar la dirección del empleado (si es necesario)
+            if (empleadoDto.Direccion != null)
+            {
+                // Verificar si la dirección actual del empleado existe
+                if (empleadoExistente.IdDireccionFk != 0)
+                {
+                    // Actualizar los campos de la dirección existente
+                    var direccionExistente = await _unitOfWork.Direcciones.GetById(empleadoExistente.IdDireccionFk);
+                    if (direccionExistente != null)
+                    {
+                        direccionExistente.TipoVia = empleadoDto.Direccion.TipoVia;
+                        direccionExistente.Calle = empleadoDto.Direccion.Calle;
+                        direccionExistente.Carrera = empleadoDto.Direccion.Carrera;
+                        direccionExistente.Numero = empleadoDto.Direccion.Numero;
+                        direccionExistente.IdCiudadFk = empleadoDto.Direccion.IdCiudadFk;
+                        // Puedes agregar más campos de dirección aquí si es necesario
+                    }
+                }
+                else
+                {
+                    var nuevaDireccion = new Direccion
+                    {
+                        TipoVia = empleadoDto.Direccion.TipoVia,
+                        Calle = empleadoDto.Direccion.Calle,
+                        Carrera = empleadoDto.Direccion.Carrera,
+                        Numero = empleadoDto.Direccion.Numero,
+                        IdCiudadFk = empleadoDto.Direccion.IdCiudadFk
+                    };
+                    _unitOfWork.Direcciones.Add(nuevaDireccion);
+                    empleadoExistente.IdDireccionFk = nuevaDireccion.Id;
+                }
+            }
+
             await _unitOfWork.SaveAsync();
-            return EmpleadoDto;
+
+            var empleadoActualizadoDto = mapper.Map<EmpleadoCrearDto>(empleadoExistente);
+
+            return Ok(empleadoActualizadoDto);
         }
 
         [HttpDelete("{id}")]
