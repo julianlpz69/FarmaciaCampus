@@ -11,6 +11,7 @@ public interface IUnitOfWork
     IFacturaCompra FacturaCompras {get;}
     IEmpleado Empleados {get;}
     IDireccion Direcciones {get;}
+    IMarca Marcas {get;}
     IPais Paises {get;}
     IDepartamento Departamentos {get;}
     ICiudad Ciudades {get;}

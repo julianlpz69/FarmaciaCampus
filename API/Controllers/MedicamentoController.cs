@@ -6,6 +6,7 @@ using API.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -21,15 +22,15 @@ namespace API.Controllers
             _unitOfWork = UnitOfWork;
             mapper = Mapper;
         }
-
+        
+         [Authorize]
          [HttpGet]
          [ProducesResponseType(StatusCodes.Status200OK)]
          [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        
-         public async Task<ActionResult<IEnumerable<MedicamentoDto>>> Get()
+         public async Task<ActionResult<IEnumerable<MedicamentoGetDto>>> Get()
          {
             var Medicamentos = await _unitOfWork.Medicamentos.GetAllAsync();
-            return mapper.Map<List<MedicamentoDto>>(Medicamentos);
+            return mapper.Map<List<MedicamentoGetDto>>(Medicamentos);
 
          }
 

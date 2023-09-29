@@ -22,6 +22,11 @@ public class ProveedorConfiguration : IEntityTypeConfiguration<Proveedor>
             .WithMany(p => p.Proveedores)
             .HasForeignKey(p => p.IdDireccionFK);
 
+        builder.HasData(
+                new Proveedor{Id=1, NombreProveedor = "Sesderma", NITProveedor = "12324", ContactoProveedor = "31231", IdDireccionFK = 1 },
+                new Proveedor{Id=2, NombreProveedor = "Bayer", NITProveedor = "12324", ContactoProveedor = "31231", IdDireccionFK = 2},
+                new Proveedor{Id=3, NombreProveedor = "Pfizer ", NITProveedor = "12324", ContactoProveedor = "31231", IdDireccionFK = 3}
+            );
         
     }
 }
