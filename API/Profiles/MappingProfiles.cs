@@ -21,6 +21,9 @@ namespace API.Profiles
             CreateMap<Empleado, EmpleadoDto>().ReverseMap();
             CreateMap<CargoEmpleado, CargoEmpleadoDto>().ReverseMap();
             CreateMap<Direccion, DireccionDto>().ReverseMap();
+            CreateMap<Medicamento, MedicamentoGetDto>().ReverseMap();
+            CreateMap<Marca, MarcaDto>().ReverseMap();
+            CreateMap<Proveedor, ProveedorjjDto>().ReverseMap();
 
             CreateMap<Empleado, EmpleadoVentaDto>()
            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

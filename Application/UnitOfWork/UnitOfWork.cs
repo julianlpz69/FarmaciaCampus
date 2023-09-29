@@ -1,6 +1,7 @@
 
 using Application.Repository;
 using CsvHelper;
+using Domain.Entities;
 using Domain.Interface;
 using Persistence.Data;
 
@@ -18,6 +19,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private ProveedorRepository _proveedor;
     private MedicamentoVentaRepository _medicamentoVenta;
     private PaisRepository _pais;
+    private MarcaRepository _marca;
     private DepartamentoRepository _departamento;
     private CiudadRepository _ciudad;
     private readonly FarmaciaDBContext _context; 
@@ -171,6 +173,18 @@ public class UnitOfWork : IUnitOfWork, IDisposable
                 _ciudad = new(_context);
             }
             return _ciudad;
+        }
+    }
+
+    public IMarca Marcas
+    {
+        get
+        {
+            if (_marca == null)
+            {
+                _marca = new(_context);
+            }
+            return _marca;
         }
     }
 
