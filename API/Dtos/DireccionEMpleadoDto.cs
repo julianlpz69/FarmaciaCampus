@@ -17,5 +17,7 @@ namespace API.Dtos
         public string DireccionCarrera { get; set; }
         public string DireccionNumero { get; set; }
         public int DireccionIdCiudadFk { get; set; }
+        public string DireccionComplemento { get; set; }
+
     }
 }

@@ -47,7 +47,7 @@ public class EmpleadoRepository : GenericRepository<Empleado>, IEmpleado
     {
         var empleadosSinVentas = await _context.Empleados
             .Where(e => !e.FacturaVentas
-                .Any(v => v.FechaVenta.Year == 2023))
+                .Any(v => v.FechaVenta.Year == 2023)).Include(p => p.Direccion).Include(p => p.CargoEmpleado)
             .ToListAsync();
 
         return empleadosSinVentas;

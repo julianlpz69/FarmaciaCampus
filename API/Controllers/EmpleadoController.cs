@@ -54,6 +54,7 @@ namespace API.Controllers
                 Carrera = empleadoDireccionDto.DireccionCarrera,
                 Numero = empleadoDireccionDto.DireccionNumero,
                 IdCiudadFk = empleadoDireccionDto.DireccionIdCiudadFk,
+                Complemento = empleadoDireccionDto.DireccionComplemento
             };
 
             _unitOfWork.Direcciones.Add(direccion);
