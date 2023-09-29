@@ -15,8 +15,13 @@ namespace Application.Repository
         }
 
    public override async Task<IEnumerable<Departamento>> GetAllAsync()
-{
- return await _context.Departamentos.ToListAsync();
-}  
-}
+        {
+            return await _context.Departamentos.ToListAsync();
+        }
+        public override async Task<Departamento> GetById(int id)
+        {
+            var datos = await _context.Set<Departamento>().Include(e => e.Ciudades).ToListAsync();
+            return datos.Where(e => e.Id == id).FirstOrDefault();
+        }
+    }
 }
