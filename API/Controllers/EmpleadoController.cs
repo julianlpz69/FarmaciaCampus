@@ -2,6 +2,7 @@ using API.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,6 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
@@ -89,14 +91,12 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            // Verificar si el empleado con el ID dado existe en la base de datos
             var empleadoExistente = await _unitOfWork.Empleados.GetById(id);
             if (empleadoExistente == null)
             {
                 return NotFound();
             }
 
-            // Actualizar los campos del empleado existente con los valores del DTO
             empleadoExistente.Nombre = empleadoDto.Nombre;
             empleadoExistente.Apellido = empleadoDto.Apellido;
             empleadoExistente.Cedula = empleadoDto.Cedula;
@@ -104,13 +104,10 @@ namespace API.Controllers
             empleadoExistente.IdCargoEmpleadoFK = empleadoDto.IdCargoEmpleadoFK;
             empleadoExistente.IdTipoDocumentoFK = empleadoDto.IdTipoDocumentoFK;
 
-            // Actualizar la dirección del empleado (si es necesario)
             if (empleadoDto.Direccion != null)
             {
-                // Verificar si la dirección actual del empleado existe
                 if (empleadoExistente.IdDireccionFk != 0)
                 {
-                    // Actualizar los campos de la dirección existente
                     var direccionExistente = await _unitOfWork.Direcciones.GetById(empleadoExistente.IdDireccionFk);
                     if (direccionExistente != null)
                     {
@@ -119,7 +116,6 @@ namespace API.Controllers
                         direccionExistente.Carrera = empleadoDto.Direccion.Carrera;
                         direccionExistente.Numero = empleadoDto.Direccion.Numero;
                         direccionExistente.IdCiudadFk = empleadoDto.Direccion.IdCiudadFk;
-                        // Puedes agregar más campos de dirección aquí si es necesario
                     }
                 }
                 else
@@ -162,14 +158,21 @@ namespace API.Controllers
         [HttpGet("ventas-por-empleado/{id}")]
         public async Task<ActionResult<EmpleadoVentaDto>> ObtenerVentasPorEmpleadoEn2023(int id)
         {
+            var empleado = await _unitOfWork.Empleados.GetById(id);
+            if (empleado == null)
+            {
+                ModelState.AddModelError("Id", "El empleado especificado no existe.");
+                return BadRequest(ModelState);
+            }
+
             int cantidadVentas = await _unitOfWork.FacturaVentas.VentasEmpleado2023Async(id);
 
-            var empleado = await _unitOfWork.Empleados.GetById(id);
             var empleadoDto = mapper.Map<EmpleadoVentaDto>(empleado);
             empleadoDto.CantidadVentas = cantidadVentas;
 
             return empleadoDto;
         }
+
 
 
         [HttpGet("Ventas/mas-de-5")]
@@ -220,9 +223,23 @@ namespace API.Controllers
         public async Task<ActionResult<EmpleadoMedicamentosDistintosDto>> empleadoMasMeddistintos()
         {
             var empleado = await _unitOfWork.Empleados.EmpleadoConMasMedicamentosDistintosVendidosEn2023Async();
+            if (empleado == null)
+            {
+                ModelState.AddModelError("EmpleadoId", "No se encontró un empleado con medicamentos vendidos en 2023.");
+                return BadRequest(ModelState);
+            }
+
+            int cantidadMedicamentosDistintos = await _unitOfWork.Empleados.cantidadMedicamentosDistintosVendidos2023Async();
+            if (cantidadMedicamentosDistintos <= 0)
+            {
+                ModelState.AddModelError("CantidadMedicamentosDistintos", "No se vendieron medicamentos distintos en 2023.");
+                return BadRequest(ModelState);
+            }
+
             var empleadoDto = mapper.Map<EmpleadoMedicamentosDistintosDto>(empleado);
-            empleadoDto.CantidadMedicamentosDistintosVendidos = await _unitOfWork.Empleados.cantidadMedicamentosDistintosVendidos2023Async();
+            empleadoDto.CantidadMedicamentosDistintosVendidos = cantidadMedicamentosDistintos;
             return empleadoDto;
         }
+
     }
 }
