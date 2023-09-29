@@ -8,6 +8,7 @@ namespace API.Dtos;
 
 public class AllProveedorDto
 {
+    public int Id { get; set; }
     public string NombreProveedor { get; set; }
     public string ContactoProveedor {get; set;}
     public DireccionDto Direccion { get; set; }

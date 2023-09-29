@@ -4,8 +4,8 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
-namespace Application.Repository
-{
+namespace Application.Repository;
+
     public class PaisRepository : GenericRepository<Pais>, IPais
     {
         private readonly FarmaciaDBContext _context;
@@ -24,4 +24,3 @@ namespace Application.Repository
         }
 
     }
-}

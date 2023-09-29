@@ -58,7 +58,7 @@ public class ProveedorController : BaseApiController
                 totalAnual = suma
             };
             return vendidos;
-        }).ToList();
+        }).OrderByDescending(e => e.totalAnual).ToList();
         return Ok(dto);
     }
     [HttpGet("provlessthan50med")]
