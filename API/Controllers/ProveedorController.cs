@@ -126,13 +126,20 @@ public class ProveedorController : BaseApiController
     [HttpPut("Update/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AllProveedorDto>> UpdateProveedor([FromBody] Proveedor proveedor, int Id){
-        var dato = await _unitOfWork.Proveedores.GetById(Id);
-        if(dato == null){
+    public async Task<ActionResult<Proveedor>> UpdateProveedor([FromBody] UpdateProveedorDto proveedor, int Id){
+        var datoprov = await _unitOfWork.Proveedores.GetById(Id);
+        var datoDir = await _unitOfWork.Direcciones.GetById(proveedor.IdDireccionFK);
+        datoDir.Numero = proveedor.Direccion.Numero;
+        datoDir.Carrera = proveedor.Direccion.Carrera;
+        datoDir.Calle = proveedor.Direccion.Calle;
+        datoDir.IdCiudadFk = proveedor.Direccion.IdCiudadFk;
+        if(datoprov == null){
             return BadRequest();
         }
-        _unitOfWork.Proveedores.Update(dato, proveedor);
+        var prov = _mapper.Map<Proveedor>(proveedor);
+        _unitOfWork.Proveedores.Update(datoprov, prov);
+        _unitOfWork.Direcciones.Update(datoDir);
         await _unitOfWork.SaveAsync();
-        return NoContent();
+        return prov;
     }
 }

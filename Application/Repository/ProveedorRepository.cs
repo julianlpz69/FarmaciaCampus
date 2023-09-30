@@ -83,7 +83,6 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
     {
         old.NombreProveedor = nuevo.NombreProveedor;
         old.ContactoProveedor = nuevo.ContactoProveedor;
-        old.IdDireccionFK = nuevo.IdDireccionFK;
         
     }
 }
