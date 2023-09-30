@@ -10,4 +10,5 @@ public class DireccionDto{
     public string Calle {get;set;}
     public string Carrera {get;set;}
     public string Numero {get;set;}
+    public string Complemento {get;set;}
 }

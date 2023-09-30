@@ -88,6 +88,10 @@ namespace API.Profiles
          .ForMember(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellido))
          .ForMember(dest => dest.CantidadGastada, opt => opt.Ignore());
 
+        CreateMap<Proveedor, UpdateProveedorDto>()
+        .ForMember(dest => dest.IdDireccionFK, opt => opt.Ignore())
+        .ReverseMap();
+
          CreateMap<Proveedor, ProveedorMasVendioDto>()
          .ForMember(e => e.CantidadVendida, opt => opt.MapFrom(e => e.Medicamentos.Select(x => x.MedicamentosCompras.Select(y => y.CantidadComprada).Sum()).Sum()))
          .ReverseMap();
