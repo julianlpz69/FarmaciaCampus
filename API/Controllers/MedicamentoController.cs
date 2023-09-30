@@ -23,7 +23,7 @@ namespace API.Controllers
             mapper = Mapper;
         }
         
-         [Authorize]
+     
          [HttpGet]
          [ProducesResponseType(StatusCodes.Status200OK)]
          [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -39,10 +39,10 @@ namespace API.Controllers
          [ProducesResponseType(StatusCodes.Status200OK)]
          [ProducesResponseType(StatusCodes.Status400BadRequest)]
         
-         public async Task<ActionResult<IEnumerable<MedicamentoDto>>> GetStock50()
+         public async Task<ActionResult<IEnumerable<MedicamentoGetDto>>> GetStock50()
          {
             var Medicamentos = await _unitOfWork.Medicamentos.GetStock_50();
-            return mapper.Map<List<MedicamentoDto>>(Medicamentos);
+            return mapper.Map<List<MedicamentoGetDto>>(Medicamentos);
 
          }
 
@@ -52,10 +52,10 @@ namespace API.Controllers
          [ProducesResponseType(StatusCodes.Status200OK)]
          [ProducesResponseType(StatusCodes.Status400BadRequest)]
         
-         public async Task<ActionResult<IEnumerable<MedicamentoDto>>> GetExpiAntes2024()
+         public async Task<ActionResult<IEnumerable<MedicamentoGetDto>>> GetExpiAntes2024()
          {
             var Medicamentos = await _unitOfWork.Medicamentos.GetExpiracionAntes2024();
-            return mapper.Map<List<MedicamentoDto>>(Medicamentos);
+            return mapper.Map<List<MedicamentoGetDto>>(Medicamentos);
 
          }
 
@@ -65,10 +65,10 @@ namespace API.Controllers
          [ProducesResponseType(StatusCodes.Status200OK)]
          [ProducesResponseType(StatusCodes.Status400BadRequest)]
         
-         public async Task<ActionResult<IEnumerable<MedicamentoDto>>> GetExpi2024()
+         public async Task<ActionResult<IEnumerable<MedicamentoGetDto>>> GetExpi2024()
          {
             var Medicamentos = await _unitOfWork.Medicamentos.GetExpiracion2024();
-            return mapper.Map<List<MedicamentoDto>>(Medicamentos);
+            return mapper.Map<List<MedicamentoGetDto>>(Medicamentos);
 
          }
 
@@ -77,10 +77,10 @@ namespace API.Controllers
          [ProducesResponseType(StatusCodes.Status200OK)]
          [ProducesResponseType(StatusCodes.Status400BadRequest)]
         
-         public async Task<ActionResult<IEnumerable<MedicamentoDto>>> GetMayor50Menor100()
+         public async Task<ActionResult<IEnumerable<MedicamentoGetDto>>> GetMayor50Menor100()
          {
             var Medicamentos = await _unitOfWork.Medicamentos.ValorMas50StockMenor100();
-            return mapper.Map<List<MedicamentoDto>>(Medicamentos);
+            return mapper.Map<List<MedicamentoGetDto>>(Medicamentos);
 
          }
 
@@ -89,10 +89,10 @@ namespace API.Controllers
          [ProducesResponseType(StatusCodes.Status200OK)]
          [ProducesResponseType(StatusCodes.Status400BadRequest)]
         
-         public async Task<ActionResult<MedicamentoDto>> GetValorMayor()
+         public async Task<ActionResult<MedicamentoGetDto>> GetValorMayor()
          {
             var Medicamentos = await _unitOfWork.Medicamentos.MasCaro();
-            return mapper.Map<MedicamentoDto>(Medicamentos);
+            return mapper.Map<MedicamentoGetDto>(Medicamentos);
 
          }
 
