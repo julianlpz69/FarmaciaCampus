@@ -40,7 +40,7 @@ namespace API.Profiles
             CreateMap<Ciudad, CiudadDto>().ReverseMap();
             CreateMap<Pais, PaisXIdDto>().ReverseMap();
             CreateMap<Departamento, DepartamentoXIdDto>().ReverseMap();
-
+            CreateMap<Cliente, ClienteCrearDto>().ReverseMap();
             // Guardar Proveedor 
             CreateMap<Proveedor, PostProveedorDto>().ReverseMap();
             // Lista de Proveedores
