@@ -38,8 +38,7 @@ namespace API.Controllers
         public async Task<ActionResult<FacturaVenta>> Post(FacturaVentaDto FacturaVentaDto)
         {
             var FacturaVenta = this.mapper.Map<FacturaVenta>(FacturaVentaDto);
-            _unitOfWork.FacturaVentas.Add(FacturaVenta);
-            await _unitOfWork.SaveAsync();
+            var addFactura = await _unitOfWork.FacturaVentas.CrearFacturaVentaAsync(FacturaVenta);
 
             if (FacturaVenta == null)
             {
@@ -177,5 +176,21 @@ namespace API.Controllers
             return mapper.Map<List<MedicamentoDto>>(medicamentos);
         }
 
+        [HttpGet("Promedio-Ventas")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<double>> PromedioVentas()
+        {
+            var promedio = await _unitOfWork.FacturaVentas.PromedioMedicamentosCompradosPorVentaAsync();
+            return promedio;
+        }
+        [HttpGet("Recetas-generadas/2023")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IEnumerable<RecetaDto>> recetasGeneradas2023()
+        {
+            var recetas = await _unitOfWork.FacturaVentas.RecetasEmitidas2023Async();
+            return mapper.Map<IEnumerable<RecetaDto>>(recetas);   
+        }
     }
 }

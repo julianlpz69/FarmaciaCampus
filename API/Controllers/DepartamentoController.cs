@@ -24,10 +24,10 @@ public class DepartamentoController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-    public async Task<ActionResult<IEnumerable<DepartamentoDto>>> Get()
+    public async Task<ActionResult<IEnumerable<DepartamentoXIdDto>>> Get()
     {
         var Departamento = await _unitOfWork.Departamentos.GetAllAsync();
-        return mapper.Map<List<DepartamentoDto>>(Departamento);
+        return mapper.Map<List<DepartamentoXIdDto>>(Departamento);
 
     }
 

@@ -107,15 +107,14 @@ public class FacturaVentaRepository : GenericRepository<FacturaVenta>, IFacturaV
     }
     public async Task<double> PromedioMedicamentosCompradosPorVentaAsync()
     {
-        var promedio = await _context.FacturaCompras
-            .Where(fc => fc.FechaCompra.Year == 2023)
-            .Select(fc => fc.MedicamentosComprados.Count)
-            .DefaultIfEmpty(0)
-            .AverageAsync();
+        var cantidadMedicamentos = await _context.FacturaVentas
+            .Where(fc => fc.FechaVenta.Year == 2023)
+            .SumAsync(fc => fc.MedicamentosVendidos.Count);
 
-        return promedio;
+        var cantidadVentas = _context.FacturaVentas.Count();
+        return cantidadMedicamentos / cantidadVentas;
     }
-    
+
     public async Task<IEnumerable<Receta>> RecetasEmitidas2023Async()
     {
         var fechaLimite = new DateTime(2023, 1, 1);
@@ -127,5 +126,20 @@ public class FacturaVentaRepository : GenericRepository<FacturaVenta>, IFacturaV
         return recetas;
     }
 
+    public async Task<FacturaVenta> CrearFacturaVentaAsync(FacturaVenta nuevaFacturaVenta)
+    {
+        var requiereReceta = nuevaFacturaVenta.MedicamentosVendidos
+        .Any(mv => mv.Medicamento.RequiereReceta);
+
+        if (requiereReceta && (nuevaFacturaVenta.Recetas == null || !nuevaFacturaVenta.Recetas.Any()))
+
+        {
+            throw new Exception("No se puede realizar la venta de un medicamento que requiere receta sin una receta asociada");
+        }
+
+        _context.FacturaVentas.Add(nuevaFacturaVenta);
+         await _context.SaveChangesAsync();
+        return nuevaFacturaVenta;
+    }
 }
 

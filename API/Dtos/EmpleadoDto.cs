@@ -11,4 +11,5 @@ namespace API.Dtos;
         public string Telefono { get; set; }
         public DireccionDto Direccion{ get; set; }
         public CargoEmpleadoDto CargoEmpleado { get; set; }
+        public TipoDocumento TipoDocumento { get; set; }
     }
