@@ -11,4 +11,6 @@ public class DireccionDto{
     public string Carrera {get;set;}
     public string Numero {get;set;}
     public string Complemento {get;set;}
+    public int IdCiudadFk { get; set; }
+
 }

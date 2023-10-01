@@ -22,6 +22,10 @@ public class EmpleadoRepository : GenericRepository<Empleado>, IEmpleado
             .Include(p => p.CargoEmpleado)
             .ToListAsync();
     }
+    public override async Task<Empleado> GetById(int id)
+    {
+        return await _context.Set<Empleado>().Include(p => p.Direccion).Include(p => p.CargoEmpleado).FirstOrDefaultAsync(p => p.Id == id);
+    }
     public async Task<IEnumerable<Empleado>> EmpleadosMas5Ventas()
     {
         var empleados = await _context.Empleados
@@ -43,7 +47,7 @@ public class EmpleadoRepository : GenericRepository<Empleado>, IEmpleado
     {
         var empleadosSinVentas = await _context.Empleados
             .Where(e => !e.FacturaVentas
-                .Any(v => v.FechaVenta.Year == 2023))
+                .Any(v => v.FechaVenta.Year == 2023)).Include(p => p.Direccion).Include(p => p.CargoEmpleado)
             .ToListAsync();
 
         return empleadosSinVentas;
@@ -73,7 +77,25 @@ public class EmpleadoRepository : GenericRepository<Empleado>, IEmpleado
             .OrderByDescending(x => x.CantidadMedicamentosDistintos)
             .FirstOrDefault();
 
-        return empleado?.Empleado;
+        return empleado.Empleado;
+    }
+    public async Task<int> cantidadMedicamentosDistintosVendidos2023Async()
+    {
+        var ventas = await _context.FacturaVentas
+            .Where(f => f.FechaVenta.Year == 2023)
+            .Include(f => f.Empleado)
+            .Include(f => f.MedicamentosVendidos)
+            .ThenInclude(mv => mv.Medicamento)
+            .ToListAsync();
+
+        var empleado = ventas
+            .SelectMany(f => f.MedicamentosVendidos.Select(mv => new { f.Empleado, mv.Medicamento }))
+            .GroupBy(x => x.Empleado)
+            .Select(g => new { Empleado = g.Key, CantidadMedicamentosDistintos = g.Select(x => x.Medicamento).Distinct().Count() })
+            .OrderByDescending(x => x.CantidadMedicamentosDistintos)
+            .FirstOrDefault();
+
+        return empleado.CantidadMedicamentosDistintos;
     }
 
 

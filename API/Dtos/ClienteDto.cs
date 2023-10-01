@@ -13,7 +13,7 @@ namespace API.Dtos
     public string Apellido {get; set;}
     public string Cedula {get; set;}
     public string Telefono {get; set;}
-    public int IdDireccionFk {get; set;}
+    public DireccionDto Direccion {get; set;}
     public List<FacturaVentaDto> FacturaVentas {get; set;}
     }
 }

@@ -19,6 +19,10 @@ namespace Application.Repository
         {
             return await _context.Clientes.Include(c => c.FacturaVentas).ToListAsync();
         }
+        public override async Task<Cliente> GetById(int id)
+        {
+            return await _context.Set<Cliente>().Include(p => p.Direccion).Include(p => p.FacturaVentas).FirstOrDefaultAsync(p => p.Id == id);
+        }
         public async Task<Cliente> PacienteQueGastoMasEn2023Async(Task<IEnumerable<Cliente>> pacientesConComprasEn2023Task)
         {
             var pacientesConComprasEn2023 = await pacientesConComprasEn2023Task;

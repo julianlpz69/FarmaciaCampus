@@ -16,9 +16,13 @@ namespace API.Profiles
 
             CreateMap<Cliente,ClienteDto>().ReverseMap();
             CreateMap<Medicamento,MedicamentoDto>().ReverseMap();
-            CreateMap<FacturaVenta,FacturaVentaDto>().ReverseMap();
+            // CreateMap<FacturaVenta,FacturaVentaDto>().ReverseMap();
+            CreateMap<FacturaVenta, FacturaVentaDto>()
+           .ForMember(dest => dest.Recetas, opt => opt.Ignore());
             CreateMap<MedicamentoVenta, MedicamentoVentaDto>().ReverseMap();
             CreateMap<Empleado, EmpleadoDto>().ReverseMap();
+            CreateMap<Empleado, EmpleadoCrearDto>().ReverseMap();
+            CreateMap<Receta, RecetaDto>().ReverseMap();
             CreateMap<CargoEmpleado, CargoEmpleadoDto>().ReverseMap();
             CreateMap<Direccion, DireccionDto>().ReverseMap();
             CreateMap<Medicamento, MedicamentoGetDto>().ReverseMap();
@@ -36,7 +40,7 @@ namespace API.Profiles
             CreateMap<Ciudad, CiudadDto>().ReverseMap();
             CreateMap<Pais, PaisXIdDto>().ReverseMap();
             CreateMap<Departamento, DepartamentoXIdDto>().ReverseMap();
-
+            CreateMap<Cliente, ClienteCrearDto>().ReverseMap();
             // Guardar Proveedor 
             CreateMap<Proveedor, PostProveedorDto>().ReverseMap();
             // Lista de Proveedores

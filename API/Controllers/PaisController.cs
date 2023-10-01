@@ -24,10 +24,10 @@ public class PaisController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-    public async Task<ActionResult<IEnumerable<PaisDto>>> Get()
+    public async Task<ActionResult<IEnumerable<PaisXIdDto>>> Get()
     {
         var Pais = await _unitOfWork.Paises.GetAllAsync();
-        return mapper.Map<List<PaisDto>>(Pais);
+        return mapper.Map<List<PaisXIdDto>>(Pais);
 
     }
 
@@ -48,15 +48,16 @@ public class PaisController : BaseApiController
         PaisDto.Id = Pais.Id;
         return CreatedAtAction(nameof(Post), new { id = PaisDto.Id }, Pais);
     }
-
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaisDto>> Get(int id)
+    public async Task<ActionResult<PaisXIdDto>> Get(int id)
     {
         var Pais = await _unitOfWork.Paises.GetById(id);
-        return mapper.Map<PaisDto>(Pais);
+        return mapper.Map<PaisXIdDto>(Pais);
     }
+
+
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
