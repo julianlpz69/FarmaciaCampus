@@ -1,3 +1,4 @@
+using Domain.Entities;
 namespace API.Dtos
 {
     public class FacturaVentaDto
@@ -9,6 +10,6 @@ namespace API.Dtos
         public Double ValorTotal { get; set;}
         public double ValorTotalMasIva { get; set; }
         public DateTime FechaVenta { get; set; }
-        public int IdMetodoPagoFK { get; set; }
+        public MetodoPago MetodoPago { get; set; }
     }
 }

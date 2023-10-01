@@ -18,6 +18,7 @@ public class FacturaVentaRepository : GenericRepository<FacturaVenta>, IFacturaV
     {
         return await _context.FacturaVentas
             .Include(p => p.MedicamentosVendidos)
+            .Include(e => e.MetodoPago)
             .ToListAsync();
     }
 
