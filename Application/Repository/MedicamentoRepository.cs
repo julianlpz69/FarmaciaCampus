@@ -69,12 +69,34 @@ public class MedicamentoRepository : GenericRepository<Medicamento>, IMedicament
 
     }
 
-    public async Task<Medicamento> MasCaro()
-    {   
+    // public async Task<Medicamento> MasCaro()
+    // {   
     
-        var medicamentosEscasos =  await _context.Medicamentos.OrderByDescending(p => p.PrecioMedicamento).Include(p => p.Marca).Include(p => p.Proveedor).FirstOrDefaultAsync();
-        return medicamentosEscasos;
+    //     var medicamentosEscasos =  await _context.Medicamentos.OrderByDescending(p => p.PrecioMedicamento).Include(p => p.Marca).Include(p => p.Proveedor).FirstOrDefaultAsync();
+    //     return medicamentosEscasos;
                 
 
+    // }
+
+
+
+    public async Task<IEnumerable<Medicamento>> MasCaro()
+{
+    var medicamentosEscasos = await _context.Medicamentos.OrderByDescending(p => p.PrecioMedicamento)
+        .Include(p => p.Marca)
+        .Include(p => p.Proveedor)
+        .ToListAsync();
+
+    if (medicamentosEscasos.Count > 1 && medicamentosEscasos[0].PrecioMedicamento == medicamentosEscasos[1].PrecioMedicamento)
+    {
+        // Si hay más de un medicamento con el mismo precio más alto, devuelve todos ellos
+        return medicamentosEscasos.TakeWhile(m => m.PrecioMedicamento == medicamentosEscasos[0].PrecioMedicamento).ToList();
     }
+    else
+    {
+        // Si solo hay un medicamento con el precio más alto, devuelve ese medicamento
+        return new List<Medicamento> { medicamentosEscasos[0] };
+    }
+}
+
 }

@@ -89,10 +89,10 @@ namespace API.Controllers
          [ProducesResponseType(StatusCodes.Status200OK)]
          [ProducesResponseType(StatusCodes.Status400BadRequest)]
         
-         public async Task<ActionResult<MedicamentoGetDto>> GetValorMayor()
+         public async Task<ActionResult<IEnumerable<MedicamentoGetDto>>> GetValorMayor()
          {
             var Medicamentos = await _unitOfWork.Medicamentos.MasCaro();
-            return mapper.Map<MedicamentoGetDto>(Medicamentos);
+            return mapper.Map<List<MedicamentoGetDto>>(Medicamentos);
 
          }
 
