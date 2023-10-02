@@ -102,10 +102,10 @@ namespace API.Controllers
         [HttpGet("Total")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<string> TotalVentas()
+        public async Task<object> TotalVentas()
         {
             var TotalVentas = await _unitOfWork.FacturaVentas.TotalVentas();
-            return TotalVentas;
+            return new{mensaje = TotalVentas};
         }
 
         [HttpGet("Clientes/Paracetamol")]
