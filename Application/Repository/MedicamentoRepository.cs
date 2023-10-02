@@ -17,7 +17,11 @@ public class MedicamentoRepository : GenericRepository<Medicamento>, IMedicament
     }
 
 
-
+    public async Task<Medicamento> GetByNombreAsync(string nombreMedicamento)
+    {
+        return await _context.Medicamentos
+            .FirstOrDefaultAsync(m => m.NombreMedicamento == nombreMedicamento);
+    }
     public override async Task<IEnumerable<Medicamento>> GetAllAsync()
     {
         return await _context.Medicamentos

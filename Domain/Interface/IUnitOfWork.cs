@@ -9,6 +9,7 @@ public interface IUnitOfWork
     ICliente Clientes {get;}
     IFacturaVenta FacturaVentas {get;}
     IFacturaCompra FacturaCompras {get;}
+    IMetodoPago MetodosPago { get; }
     IEmpleado Empleados {get;}
     IDireccion Direcciones {get;}
     IMarca Marcas {get;}

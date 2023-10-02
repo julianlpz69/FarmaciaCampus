@@ -8,9 +8,12 @@ namespace API.Dtos
 {
     public class FacturaCompraDto
     {
-   
-    public ICollection<MedicamentoCompra> MedicamentoCompras {get; set;}
-    public int IdProveedorFk {get; set;}
-    
+        public int Id { get; set; }
+        public double ValorTotal { get; set; }
+        public DateTime FechaCompra { get; set; }
+        public MetodoPagoDto MetodoPago { get; set; }
+        public List<MedicamentoCompraDto> MedicamentosComprados { get; set; }
+        public AllProveedorDto Proveedor { get; set; }
+
     }
 }
