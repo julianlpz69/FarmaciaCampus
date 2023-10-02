@@ -102,19 +102,19 @@ namespace API.Controllers
         [HttpGet("Total")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<string> TotalVentas()
+        public async Task<object> TotalVentas()
         {
             var TotalVentas = await _unitOfWork.FacturaVentas.TotalVentas();
-            return TotalVentas;
+            return new { mensaje = TotalVentas };
         }
 
         [HttpGet("Clientes/Paracetamol")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IEnumerable<ClienteDto>> ClientesParacetamolAsync ()
+        public async Task<IEnumerable<ClienteDto>> ClientesParacetamolAsync()
         {
             var Clientes = await _unitOfWork.MedicamentoVentas.GetPacientesParacetamolAsync();
-             return mapper.Map<List<ClienteDto>>(Clientes);
+            return mapper.Map<List<ClienteDto>>(Clientes);
         }
 
         [HttpGet("Total/Marzo")]
@@ -155,7 +155,7 @@ namespace API.Controllers
             var medicamentos = await _unitOfWork.FacturaVentas.MedicamentosVendidosCadaMesEn2023Async();
 
             return mapper.Map<List<MedicamentoDto>>(medicamentos);
-            
+
         }
 
         [HttpGet("Total/primer-trimestre")]
@@ -190,7 +190,47 @@ namespace API.Controllers
         public async Task<IEnumerable<RecetaDto>> recetasGeneradas2023()
         {
             var recetas = await _unitOfWork.FacturaVentas.RecetasEmitidas2023Async();
-            return mapper.Map<IEnumerable<RecetaDto>>(recetas);   
+            return mapper.Map<IEnumerable<RecetaDto>>(recetas);
         }
+        [HttpPost("FacturaVenta")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<FacturacionVentaDto>> FacturacionDeMedicamentos([FromBody]FacturacionVentaDto factura)
+        {
+            if (factura == null)
+            {
+                return BadRequest();
+            }
+            FacturaVenta datoFactura = mapper.Map<FacturaVenta>(factura);
+            
+            foreach (MedicamentoVentaDto i in factura.MedicamentoVentas)
+            {
+                var medicamento = await _unitOfWork.Medicamentos.GetById(i.IdMedicamentoFk);
+                if (medicamento.Stock < i.CantidadVendida)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    i.IdMedicamentoFk = medicamento.Id;
+                    i.Precio = (medicamento.PrecioMedicamento * i.CantidadVendida);
+                    datoFactura.ValorTotal += (medicamento.PrecioMedicamento * i.CantidadVendida);
+                    medicamento.Stock = medicamento.Stock - i.CantidadVendida;
+                    _unitOfWork.Medicamentos.Update(medicamento);
+                }
+            }
+           
+            _unitOfWork.FacturaVentas.Add(datoFactura);
+            await _unitOfWork.SaveAsync();
+            var id = await _unitOfWork.FacturaVentas.LastId();
+            foreach (MedicamentoVentaDto x in factura.MedicamentoVentas){
+                x.IdFacturaVentaFk = id;
+            }
+            List<MedicamentoVenta> medsCompras = mapper.Map<List<MedicamentoVenta>>(factura.MedicamentoVentas);
+             _unitOfWork.MedicamentoVentas.AddRange(medsCompras);
+            await _unitOfWork.SaveAsync();
+            return factura;
+        }
+
     }
 }

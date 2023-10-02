@@ -21,7 +21,10 @@ public class FacturaVentaRepository : GenericRepository<FacturaVenta>, IFacturaV
             .Include(e => e.MetodoPago)
             .ToListAsync();
     }
-
+    public async Task<int> LastId(){
+        var data=  await _context.Set<FacturaVenta>().OrderByDescending(e => e.Id).FirstAsync();
+        return data.Id;
+    }
     public async Task<string> TotalVentas()
     {
         var facturasVentas = await _context.FacturaVentas.ToListAsync();
