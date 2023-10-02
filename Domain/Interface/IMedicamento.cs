@@ -13,4 +13,5 @@ public interface IMedicamento : IGenericRepository<Medicamento>
          Task<IEnumerable<Medicamento>> GetExpiracionAntes2024();
          Task<IEnumerable<Medicamento>> ValorMas50StockMenor100();
          Task<IEnumerable<Medicamento>> MasCaro();
+         void ActualizarStock(Medicamento medicamento);
 }

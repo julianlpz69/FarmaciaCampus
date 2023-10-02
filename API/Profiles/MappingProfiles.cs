@@ -13,7 +13,9 @@ namespace API.Profiles
             .ForMember(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellido))
             .ForMember(dest => dest.Cedula, opt => opt.MapFrom(src => src.Cedula))
             .ForMember(dest => dest.CantidadMedicamentosDistintosVendidos, opt => opt.Ignore());
-
+            CreateMap<FacturaVenta, FacturacionVentaDto>()
+            .ForMember(dest => dest.MedicamentoVentas, opt => opt.Ignore())
+            .ReverseMap(); 
             CreateMap<Cliente,ClienteDto>().ReverseMap();
             CreateMap<Medicamento,MedicamentoDto>().ReverseMap();
             // CreateMap<FacturaVenta,FacturaVentaDto>().ReverseMap();

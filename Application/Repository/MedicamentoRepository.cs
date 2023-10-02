@@ -78,7 +78,9 @@ public class MedicamentoRepository : GenericRepository<Medicamento>, IMedicament
 
     // }
 
-
+    public void ActualizarStock(Medicamento medicamento){
+        
+    }
 
     public async Task<IEnumerable<Medicamento>> MasCaro()
 {
