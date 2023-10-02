@@ -23,11 +23,36 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private DepartamentoRepository _departamento;
     private CiudadRepository _ciudad;
     private MetodoPagoRepository _metodoPago;
+    private CargoEmpleadoRepository _cargoEmpleado;
+    private TipoDocumentoRepository _tipoDoc;
     private readonly FarmaciaDBContext _context; 
 	private IRol _roles;
     private IUser _users;
     public UnitOfWork(FarmaciaDBContext context){
         _context = context;
+    }
+
+    public ITipoDocumento TiposDocumento
+    {
+        get
+        {
+            if (_tipoDoc == null)
+            {
+                _tipoDoc = new(_context);
+            }
+            return _tipoDoc;
+        }
+    }
+    public ICargoEmpleado CargosEmpleado
+    {
+        get
+        {
+            if (_cargoEmpleado == null)
+            {
+                _cargoEmpleado = new(_context);
+            }
+            return _cargoEmpleado;
+        }
     }
     public IMetodoPago MetodosPago
     {

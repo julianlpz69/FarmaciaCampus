@@ -6,6 +6,8 @@ public interface IUnitOfWork
     IMedicamentoVenta MedicamentoVentas {get;}
     IMedicamentoCompras MedicamentoCompras {get;}
     IMedicamento Medicamentos {get;}
+    ITipoDocumento TiposDocumento {get;}
+    ICargoEmpleado CargosEmpleado{get;}
     ICliente Clientes {get;}
     IFacturaVenta FacturaVentas {get;}
     IFacturaCompra FacturaCompras {get;}
