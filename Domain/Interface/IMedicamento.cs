@@ -15,5 +15,5 @@ public interface IMedicamento : IGenericRepository<Medicamento>
          Task<IEnumerable<Medicamento>> MasCaros();
          void ActualizarStock(Medicamento medicamento);
          Task<Medicamento> GetByNombreAsync(string nombreMedicamento);
-         Task<Medicamento> MasCaro();
+         
 }

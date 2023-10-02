@@ -86,7 +86,7 @@ public class MedicamentoRepository : GenericRepository<Medicamento>, IMedicament
         
     }
 
-    public async Task<IEnumerable<Medicamento>> MasCaro()
+    public async Task<IEnumerable<Medicamento>> MasCaros()
 {
     var medicamentosEscasos = await _context.Medicamentos.OrderByDescending(p => p.PrecioMedicamento)
         .Include(p => p.Marca)

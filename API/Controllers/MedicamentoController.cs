@@ -91,7 +91,7 @@ namespace API.Controllers
         
          public async Task<ActionResult<IEnumerable<MedicamentoGetDto>>> GetValorMayor()
          {
-            var Medicamentos = await _unitOfWork.Medicamentos.MasCaro();
+            var Medicamentos = await _unitOfWork.Medicamentos.MasCaros();
             return mapper.Map<List<MedicamentoGetDto>>(Medicamentos);
 
          }
