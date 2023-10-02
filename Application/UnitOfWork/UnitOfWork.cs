@@ -22,11 +22,23 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private MarcaRepository _marca;
     private DepartamentoRepository _departamento;
     private CiudadRepository _ciudad;
+    private MetodoPagoRepository _metodoPago;
     private readonly FarmaciaDBContext _context; 
 	private IRol _roles;
     private IUser _users;
     public UnitOfWork(FarmaciaDBContext context){
         _context = context;
+    }
+    public IMetodoPago MetodosPago
+    {
+        get
+        {
+            if (_metodoPago == null)
+            {
+                _metodoPago = new(_context);
+            }
+            return _metodoPago;
+        }
     }
     public IProveedor Proveedores {
         get{

@@ -8,5 +8,7 @@ namespace Domain.Interface;
 
 public interface IFacturaCompra : IGenericRepository<FacturaCompra>
 {
-        
+    public Task<int> ProveedoresVendieronMedicamentosEn2023Async();
+    public Task<IEnumerable<MedicamentoCompra>> GetMedicamentosCompradosAlProveedor(string nombreProveedor);
+
 }

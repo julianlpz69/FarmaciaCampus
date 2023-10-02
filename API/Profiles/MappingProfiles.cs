@@ -46,10 +46,17 @@ namespace API.Profiles
             // Guardar Proveedor 
             CreateMap<Proveedor, PostProveedorDto>().ReverseMap();
             // Lista de Proveedores
+            CreateMap<MedicamentoCompra, MedicamentoCompraPostDto>().ReverseMap();
+            CreateMap<MedicamentoCompra, MedicamentoCompraDto>().ReverseMap();
+            CreateMap<MedicamentoCompra, MedicamentoCompraNuevoDto>().ReverseMap();
+            CreateMap<Medicamento, MedicamentoCompraNuevoDto>().ReverseMap();
 
-            CreateMap<Proveedor, AllProveedorDto>()
-            
-            .ReverseMap();
+            CreateMap<FacturaCompra, FacturaCompraDto>().ReverseMap();
+            CreateMap<FacturaCompra, PostCompraDto>().ReverseMap();
+            CreateMap<FacturaCompra, PostCompraNuevoDto>().ReverseMap();
+            CreateMap<MetodoPago, MetodoPagoDto>().ReverseMap();
+            CreateMap<Proveedor, AllProveedorDto>().ReverseMap();
+
 
             // Medicamentos Vendidos por proveedor
 
